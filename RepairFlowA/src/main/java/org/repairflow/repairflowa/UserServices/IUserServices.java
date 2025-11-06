@@ -1,0 +1,22 @@
+package org.repairflow.repairflowa.UserServices;
+
+
+
+import org.repairflow.repairflowa.Pojo.UserPojo.Dto.UserDto.UserDto;
+import org.repairflow.repairflowa.Pojo.UserPojo.Dto.UserDto.UserRegisterReq;
+import org.repairflow.repairflowa.Pojo.UserPojo.Dto.UserDto.UserUpdateAdmin;
+import org.repairflow.repairflowa.Pojo.UserPojo.Dto.UserDto.UserUpdateReq;
+import org.springframework.data.domain.Page;
+
+import java.util.List;
+
+public interface IUserServices {
+
+    UserDto createUser(UserRegisterReq userRegisterReq);
+    UserDto getUser(Long id);
+    List<UserDto> getAllUsers();
+    Page<UserDto> listUsers(int page, int pageSize);
+    UserDto updateUserSelf(Long id, UserUpdateReq userUpdateReq);
+    UserDto updateUserAdmin(Long id, UserUpdateAdmin userUpdateAdmin);
+    void deleteUser(Long id);
+}

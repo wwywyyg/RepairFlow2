@@ -1,0 +1,24 @@
+
+// read yaml file
+docker compose up -d
+
+
+
+// run data base
+docker run -d --name pg-repairflow \
+  -e POSTGRES_USER=repairflow \
+  -e POSTGRES_PASSWORD=repairflow \
+  -e POSTGRES_DB=repairflow \
+  -p 5433:5432 \
+  postgres:16
+
+
+  //   into terminal
+  -- view container
+  docker ps
+
+  --
+  interact with container
+  docker exec -it pg-repairflow bash
+
+  psql -U repairflow -d repairflow
