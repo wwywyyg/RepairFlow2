@@ -4,13 +4,22 @@ package org.repairflow.repairflowa.Pojo.UserPojo;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.repairflow.repairflowa.UserServices.UserDetailsServiceImpl;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.io.Serializable;
 import java.time.OffsetDateTime;
+import java.util.Collection;
+import java.util.List;
 
 @Table(name = "users")
 @Entity
 @Data
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,7 +33,7 @@ public class User {
     @Column(name = "email" , nullable = false , unique = true,length = 24)
     private String email;
 
-    @Column(name = "password_hash" , nullable = false , length = 24)
+    @Column(name = "password_hash" , nullable = false , length = 120)
     private String passwordHash;
 
     @Column(name = "phone" , nullable = false , length = 24)
@@ -47,8 +56,38 @@ public class User {
     @Column(name = "created_at", nullable = false, updatable = false)
     private OffsetDateTime createdAt;
 
-    @CreationTimestamp
+    @UpdateTimestamp
     @Column(name = "update_at", nullable = false)
     private OffsetDateTime updatedAt;
 
+
+
+
+    //  User Details Class
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
+    }
+
+    @Override
+    public String getPassword() {return this.passwordHash;}
+
+    @Override
+    public String getUsername() {return this.email;}
+
+    @Override
+    public boolean isEnabled() {return this.isActive;}
+
+    @Override
+    public boolean isCredentialsNonExpired() {return true;}
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 }

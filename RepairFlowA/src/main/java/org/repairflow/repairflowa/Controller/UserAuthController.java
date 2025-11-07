@@ -4,10 +4,7 @@ package org.repairflow.repairflowa.Controller;
 
 import jakarta.validation.Valid;
 import org.repairflow.repairflowa.Exception.ApiResponse;
-import org.repairflow.repairflowa.Pojo.UserPojo.Dto.UserDto.UserDto;
-import org.repairflow.repairflowa.Pojo.UserPojo.Dto.UserDto.UserRegisterReq;
-import org.repairflow.repairflowa.Pojo.UserPojo.Dto.UserDto.UserUpdateAdmin;
-import org.repairflow.repairflowa.Pojo.UserPojo.Dto.UserDto.UserUpdateReq;
+import org.repairflow.repairflowa.Pojo.UserPojo.Dto.UserDto.*;
 import org.repairflow.repairflowa.UserServices.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth/user")
+@RequestMapping("/user")
 public class UserAuthController {
     @Autowired
     private UserServices userServices;
@@ -31,14 +28,14 @@ public class UserAuthController {
 
     // read user
     // read one
-    @GetMapping("/{id}")
+    @GetMapping("/auth/{id}")
     public ResponseEntity<ApiResponse<UserDto>> getUserById(@PathVariable Long id) {
         UserDto userDto = userServices.getUser(id);
         return  ResponseEntity.ok(ApiResponse.success(userDto));
     }
 
     // read by List
-    @GetMapping("/list") //http://localhost:8080/auth/user/list?page=0&size=5
+    @GetMapping("/auth/list") //http://localhost:8080/auth/user/list?page=0&size=5
     public ResponseEntity<ApiResponse<Page<UserDto>>> listUsers(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "10") int size) {
         Page<UserDto> userDto = userServices.listUsers(page, size);
         return ResponseEntity.ok(ApiResponse.success(userDto));
@@ -53,16 +50,25 @@ public class UserAuthController {
         return ResponseEntity.ok(ApiResponse.success("User Updated Successfully", userDto));
     }
 
-    @PatchMapping("/update/{id}/admin")
+    @PatchMapping("/auth/update/{id}/admin")
     public ResponseEntity<ApiResponse<UserDto>> updateUserAdmin(@PathVariable Long id, @RequestBody @Valid UserUpdateAdmin userUpdateAdmin) {
         UserDto userDto = userServices.updateUserAdmin(id, userUpdateAdmin);
         return ResponseEntity.ok(ApiResponse.success("admin Updated Successfully", userDto));
     }
 
-    @DeleteMapping("/delete/{id}")
+    // Delete User
+
+    @DeleteMapping("/auth/delete/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable Long id) {
         userServices.deleteUser(id);
         return ResponseEntity.ok(ApiResponse.success("User Delete Success!",null));
+    }
+
+    // login
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<UserDto>> login(@RequestBody @Valid UserLoginReq userLoginReq) {
+        UserDto userDto = userServices.userLogin(userLoginReq);
+        return ResponseEntity.ok(ApiResponse.success("User Login Successfully", userDto));
     }
 
 }

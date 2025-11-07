@@ -10,6 +10,11 @@ import org.repairflow.repairflowa.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,10 +23,13 @@ import java.util.List;
 public class UserServices implements IUserServices{
 
     private UserRepository userRepository;
-
+    private PasswordEncoder passwordEncoder;
+    private AuthenticationManager authenticationManager;
     @Autowired
-    public UserServices(UserRepository userRepository) {
+    public UserServices(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
     }
 
 
@@ -39,7 +47,7 @@ public class UserServices implements IUserServices{
         user.setLastName(userRegisterReq.lastName());
         user.setEmail(email);
         user.setPhone(userRegisterReq.phone());
-        user.setPasswordHash(userRegisterReq.password());
+        user.setPasswordHash(passwordEncoder.encode(userRegisterReq.password()));
 
         if(user.getRole() == null) {
             user.setRole(Role.CUSTOMER);
@@ -116,6 +124,18 @@ public class UserServices implements IUserServices{
         userRepository.deleteById(id);
     }
 
+
+//    USER LOGIN
+    public UserDto userLogin(UserLoginReq userLoginReq) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLoginReq.email(), userLoginReq.password()));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        //JWT
+
+        User userInto = (User) authentication.getPrincipal();
+        return UserMapper.toUserDto(userInto);
+    }
 
 
 }
