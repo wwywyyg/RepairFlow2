@@ -1,4 +1,4 @@
-package org.repairflow.repairflowa.Exception;
+package org.repairflow.repairflowa.Exception.Response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package org.repairflow.repairflowa.UserServices;
+package org.repairflow.repairflowa.Services.UserServices;
 
 import jakarta.transaction.Transactional;
 import org.repairflow.repairflowa.Exception.AppExceptions;
@@ -81,23 +81,23 @@ public class UserServices implements IUserServices{
     }
 
 //  CUSTOMER/EMPLOYEE UPDATE INFO
-    @Transactional
-    @Override
-    public UserDto updateUserSelf(Long id, UserUpdateReq userUpdateReq) {
-        User user = userRepository.findById(id).orElseThrow(()-> new AppExceptions.ResourceNotFoundException("User Not Found " + "user ID : " + id));
-        if(userUpdateReq.firstName() != null) {
-            user.setFirstName(userUpdateReq.firstName());
-        }
-        if(userUpdateReq.lastName() != null) {
-            user.setLastName(userUpdateReq.lastName());
-        }
-        if(userUpdateReq.phone() != null) {
-            user.setPhone(userUpdateReq.phone());
-        }
-        User userUpdated = userRepository.save(user);
-        System.out.println(userUpdated.getFirstName() + " " + userUpdated.getLastName());
-        return UserMapper.toUserDto(userUpdated) ;
-    }
+//    @Transactional
+//    @Override
+//    public UserDto updateUserSelf(Long id, UserUpdateReq userUpdateReq) {
+//        User user = userRepository.findById(id).orElseThrow(()-> new AppExceptions.ResourceNotFoundException("User Not Found " + "user ID : " + id));
+//        if(userUpdateReq.firstName() != null) {
+//            user.setFirstName(userUpdateReq.firstName());
+//        }
+//        if(userUpdateReq.lastName() != null) {
+//            user.setLastName(userUpdateReq.lastName());
+//        }
+//        if(userUpdateReq.phone() != null) {
+//            user.setPhone(userUpdateReq.phone());
+//        }
+//        User userUpdated = userRepository.save(user);
+//        System.out.println(userUpdated.getFirstName() + " " + userUpdated.getLastName());
+//        return UserMapper.toUserDto(userUpdated) ;
+//    }
 
 
 //    ADMIN UPDATE USER INFO
@@ -133,8 +133,8 @@ public class UserServices implements IUserServices{
 
         //JWT
 
-        User userInto = (User) authentication.getPrincipal();
-        return UserMapper.toUserDto(userInto);
+        User userInfo = (User) authentication.getPrincipal();
+        return UserMapper.toUserDto(userInfo);
     }
 
 

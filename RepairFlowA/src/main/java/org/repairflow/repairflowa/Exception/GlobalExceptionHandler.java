@@ -1,11 +1,10 @@
 package org.repairflow.repairflowa.Exception;
 
+import org.repairflow.repairflowa.Exception.Response.ApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -55,16 +54,25 @@ public class GlobalExceptionHandler {
         return ApiResponse.error("An internal server error occurred", 500);
     }
 
+//
+//    @ExceptionHandler(BadCredentialsException.class)
+//    public ApiResponse<Object> handleBadCredException(BadCredentialsException ex) {
+//        return ApiResponse.error("Invalid email or password", 401);
+//    }
+//
+//
+//    @ExceptionHandler(UsernameNotFoundException.class)
+//    public ApiResponse<Object> handleUsernameNotFoundException(UsernameNotFoundException ex) {
+//        return ApiResponse.error("Username not found", 404);
+//    }
 
-    @ExceptionHandler(BadCredentialsException.class)
-    public ApiResponse<Object> handleBadCredException(BadCredentialsException ex) {
-        return ApiResponse.error("Invalid email or password", 401);
+    @ExceptionHandler(AuthenticationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public ApiResponse<Object> handleAuthenticationException(AuthenticationException ex) {
+        logger.error("Authentication failed for user: {}", ex.getMessage());
+        return ApiResponse.error("Invalid username or password", 401);
     }
 
-
-    @ExceptionHandler(UsernameNotFoundException.class)
-    public ApiResponse<Object> handleUsernameNotFoundException(UsernameNotFoundException ex) {
-        return ApiResponse.error("Username not found", 404);
-    }
 
 }

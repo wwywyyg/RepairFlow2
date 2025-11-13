@@ -1,4 +1,4 @@
-package org.repairflow.repairflowa.UserServices;
+package org.repairflow.repairflowa.Services.UserServices;
 
 
 
@@ -13,7 +13,7 @@ public interface IUserServices {
     UserDto getUser(Long id);
     List<UserDto> getAllUsers();
     Page<UserDto> listUsers(int page, int pageSize);
-    UserDto updateUserSelf(Long id, UserUpdateReq userUpdateReq);
+//    UserDto updateUserSelf(Long id, UserUpdateReq userUpdateReq);
     UserDto updateUserAdmin(Long id, UserUpdateAdmin userUpdateAdmin);
     void deleteUser(Long id);
     UserDto userLogin(UserLoginReq userLoginReq);
