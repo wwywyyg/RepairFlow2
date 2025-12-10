@@ -1,10 +1,10 @@
 package org.repairflow.repairflowa.Services.UserServices;
 
 import jakarta.transaction.Transactional;
-import org.repairflow.repairflowa.Exception.AppExceptions;
+import org.repairflow.repairflowa.Exception.BusinessException;
+import org.repairflow.repairflowa.Exception.ErrorCode;
 import org.repairflow.repairflowa.Pojo.UserPojo.Dto.UserDto.*;
 import org.repairflow.repairflowa.Pojo.UserPojo.User;
-
 import org.repairflow.repairflowa.Pojo.UserPojo.Role;
 import org.repairflow.repairflowa.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,7 @@ public class UserServices implements IUserServices{
     public UserDto createUser(UserRegisterReq userRegisterReq) {
         String email = userRegisterReq.email().trim().toLowerCase();
         if(userRepository.existsByEmail(email)) {
-            throw new AppExceptions.DataConflictException("Email already exists");
+            throw new BusinessException(ErrorCode.USER_ALREADY_EXIST);
         }
 
         User user = new User();
@@ -60,7 +60,7 @@ public class UserServices implements IUserServices{
 //  READ USER BY ID
     @Override
     public UserDto getUser(Long id) {
-        User user = userRepository.findById(id).orElseThrow(()-> new AppExceptions.ResourceNotFoundException("User Not Found " + "user ID : " + id));
+        User user = userRepository.findById(id).orElseThrow(()-> new BusinessException(ErrorCode.USER_NOT_FOUND));
         return UserMapper.toUserDto(user);
     }
 
@@ -104,7 +104,7 @@ public class UserServices implements IUserServices{
     @Transactional
     @Override
     public UserDto updateUserAdmin(Long id, UserUpdateAdmin userUpdateAdmin) {
-        User user = userRepository.findById(id).orElseThrow(()-> new AppExceptions.ResourceNotFoundException("User Not Found " + "user ID : " + id));
+        User user = userRepository.findById(id).orElseThrow(()-> new BusinessException(ErrorCode.USER_NOT_FOUND));
         if(userUpdateAdmin.role() != null) {
             user.setRole(userUpdateAdmin.role());
         }
@@ -119,7 +119,7 @@ public class UserServices implements IUserServices{
     @Override
     public void deleteUser(Long id) {
         if(!userRepository.existsById(id)) {
-            throw new AppExceptions.ResourceNotFoundException("User Not Found " + "user ID : " + id);
+            throw new BusinessException(ErrorCode.USER_NOT_FOUND);
         }
         userRepository.deleteById(id);
     }
@@ -128,7 +128,6 @@ public class UserServices implements IUserServices{
 //    USER LOGIN
     public UserDto userLogin(UserLoginReq userLoginReq) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLoginReq.email(), userLoginReq.password()));
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         //JWT

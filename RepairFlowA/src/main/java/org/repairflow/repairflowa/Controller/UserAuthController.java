@@ -32,14 +32,14 @@ public class UserAuthController {
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<UserDto>> getUserById(@PathVariable Long id) {
         UserDto userDto = userServices.getUser(id);
-        return  ResponseEntity.ok(ApiResponse.success(userDto));
+        return  ResponseEntity.ok(ApiResponse.success("user retrieved successfully",userDto));
     }
 
     // read by List
     @GetMapping("/list") //http://localhost:8080/auth/user/list?page=0&size=5
     public ResponseEntity<ApiResponse<Page<UserDto>>> listUsers(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "10") int size) {
         Page<UserDto> userDto = userServices.listUsers(page, size);
-        return ResponseEntity.ok(ApiResponse.success(userDto));
+        return ResponseEntity.ok(ApiResponse.success("user list retrieved successfully",userDto));
     }
 
 

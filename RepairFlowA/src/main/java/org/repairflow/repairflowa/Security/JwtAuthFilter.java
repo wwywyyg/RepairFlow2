@@ -6,10 +6,12 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.repairflow.repairflowa.Services.JwtServices.JwtServices;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -21,7 +23,7 @@ import java.io.IOException;
  * @date 11/12/25 AM1:36
  * @description TODO: Description
  */
-
+@Slf4j
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
@@ -30,9 +32,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private final UserDetailsServiceImpl userDetailsService;
 
 
+
     public JwtAuthFilter(JwtServices jwtServices, UserDetailsServiceImpl userDetailsService) {
         this.jwtServices = jwtServices;
         this.userDetailsService = userDetailsService ;
+
+
     }
 
     @Override
@@ -43,12 +48,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             try{
                 var decoded = jwtServices.verifyToken(token);
                 String email = decoded.getSubject();
-                var userDetails = userDetailsService.loadUserByUsername(email);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+                UserPrincipal userPrincipal = (UserPrincipal) userDetails;
 
-                var authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userPrincipal, null, userPrincipal.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-            }catch (JWTVerificationException ignored) {
+            }catch (JWTVerificationException e) {
+                log.warn("JWT verification failed: {}",e.getMessage());
 
             }
         }

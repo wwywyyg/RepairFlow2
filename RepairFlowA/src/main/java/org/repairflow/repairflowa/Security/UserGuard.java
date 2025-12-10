@@ -20,7 +20,7 @@ public class UserGuard {
 
         Object principal = auth.getPrincipal();
 
-        // 管理员直接放行（也可在 @PreAuthorize 写 hasRole('ADMIN')，两种都行，二选一即可）
+
         if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
             return true;
         }
@@ -29,7 +29,6 @@ public class UserGuard {
             return up.getUserId() != null && up.getUserId().equals(userId);
         }
 
-        // 兜底：如果还不是我们的 principal，就拒绝
         return false;
     }
 }

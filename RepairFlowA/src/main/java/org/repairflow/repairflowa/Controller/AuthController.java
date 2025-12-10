@@ -29,13 +29,15 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<UserDto>> register(@Valid @RequestBody UserRegisterReq userRegisterReq) {
         UserDto user = authServices.userRegister(userRegisterReq);
-        return new ResponseEntity<>(ApiResponse.success("User register Successfully", user), HttpStatus.OK);
+//        return new ResponseEntity<>(ApiResponse.success("User register Successfully", user), HttpStatus.OK);
+        return ResponseEntity.ok(ApiResponse.success("User register Successfully",user));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<UserDto>> login(@Valid @RequestBody UserLoginReq userLoginReq) {
+    public ResponseEntity<ApiResponse<UserLoginResponse>> login(@Valid @RequestBody UserLoginReq userLoginReq) {
         UserLoginResponse userLoginResponse = authServices.userLogin(userLoginReq);
-        return new ResponseEntity<>(ApiResponse.success("Login success! Token: " + userLoginResponse.token(), userLoginResponse.user()), HttpStatus.OK);
+//        return new ResponseEntity<>(ApiResponse.success("Login success! Token: " + userLoginResponse.token(), userLoginResponse.user()), HttpStatus.OK);
+        return ResponseEntity.ok(ApiResponse.success("Login Successfully",userLoginResponse));
     }
 
     // Update User
@@ -51,7 +53,7 @@ public class AuthController {
     @GetMapping("/user/{id}")
     public ResponseEntity<ApiResponse<UserDto>> getUser(@PathVariable Long id) {
         UserDto user = authServices.getUserById(id);
-        return ResponseEntity.ok(ApiResponse.success(user));
+        return ResponseEntity.ok(ApiResponse.success("user retrieved successfully",user));
     }
 
 }
