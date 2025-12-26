@@ -6,13 +6,13 @@ package org.repairflow.repairflowa.Pojo.TicketPojo;
  * @description TODO: Description
  */
 public enum TicketStatus {
-    PENDING,
+    PENDING,  // CREATED
     ASSIGNED,
     QUOTED,
-    AWAITING_DEVICE,
-    DEVICE_RECEIVED,
-    IN_PROGRESS,
-    READY_FOR_CONFIRMATION,
+    AWAITING_DEVICE, // AWAITING
+    DEVICE_RECEIVED, // RECEIVED
+    IN_PROGRESS, // RPROGRESSING
+    READY_FOR_CONFIRMATION, //COMPELETED
     PAID,
     SHIPPED,
     DELIVERED
