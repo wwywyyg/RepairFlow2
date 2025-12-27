@@ -3,26 +3,7 @@ import {Card,ListGroup, Badge} from 'react-bootstrap'
 
 const TicketInfo = ({ticket}) =>{
 
-//     const ticket = {
-//     id: 101, // 防止 undefined
-//     title: "MacBook Screen Repair",
-//     status: "DEVICE_RECEIVED", // 可以改这个测试进度条
-//     description: "Screen flickering and shows vertical lines after drop.",
-//     deviceCategoryId: "Laptop (501)",
-//     issueTypeId: "Screen (50105)",
-//     quoteAmount: 450.00,
-//     paid: false,
-//     createdAt: "2025-12-01T09:00:00",
-//     updatedAt: "2025-12-01T09:00:00",
-//     customer: {
-//       name: "Alice Wang",
-//       email: "alice@test.com"
-//     },
-//     employee: {
-//       name: "Tech Mike",
-//       email: "mike@repair.com"
-//     }
-//   };
+
 
 
 

@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+//page components
 import HomePage from "./Pages/HomePage";
 import AuthPage from "./Pages/AuthPage";
 import Dashboard from "./Pages/Dashboard"

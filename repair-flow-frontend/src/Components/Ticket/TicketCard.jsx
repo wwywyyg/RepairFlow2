@@ -5,28 +5,28 @@ import {NavLink} from 'react-router-dom';
 
 const TicketCard = ({ticket}) =>{
 
-    const TEST_TICKET = {
-      "id": 10,
-      "title": "Phone Screen Crack", 
-      "description": "battery die after 1 hour usage.this is a longgggggggggggggggggggggggggggggggggggggggg description",
-      "deviceCategoryId": 501,
-      "issueTypeId": 50105,
-      "status": "DELIVERED", 
-      "quoteAmount": 199.99,
-      "paid": true,
-      "customer": {
-          "id": 14,
-          "name": "Zhang San",
-          "email": "customer2@test.com"
-      },
-      "employee": {
-          "id": 15,
-          "name": "Li Si",
-          "email": "employee1@test.com"
-      },
-      "createdAt": "2025-12-10T00:11:55.162773",
-      "updatedAt": "2025-12-10T00:19:14.227807"
-  };
+//     const TEST_TICKET = {
+//       "id": 10,
+//       "title": "Phone Screen Crack", 
+//       "description": "battery die after 1 hour usage.this is a longgggggggggggggggggggggggggggggggggggggggg description",
+//       "deviceCategoryId": 501,
+//       "issueTypeId": 50105,
+//       "status": "DELIVERED", 
+//       "quoteAmount": 199.99,
+//       "paid": true,
+//       "customer": {
+//           "id": 14,
+//           "name": "Zhang San",
+//           "email": "customer2@test.com"
+//       },
+//       "employee": {
+//           "id": 15,
+//           "name": "Li Si",
+//           "email": "employee1@test.com"
+//       },
+//       "createdAt": "2025-12-10T00:11:55.162773",
+//       "updatedAt": "2025-12-10T00:19:14.227807"
+//   };
 
 
     // State color
