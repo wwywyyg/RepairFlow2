@@ -148,8 +148,6 @@ const AuthForm = () => {
                     <span>&larr;</span>Back to Home
                     </Link>
                 </div>
-                
-                
             </Card.Body>
         </Card>
     )

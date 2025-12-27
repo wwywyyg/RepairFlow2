@@ -1,8 +1,9 @@
 import React from "react";
 import { Nav } from "react-bootstrap";
 import {Link, NavLink} from 'react-router-dom'
+import { MOCK_USERS } from "../Data/MockData";
 
-const MOCK_ROLE = "admin";
+const MOCK_ROLE = MOCK_USERS.customer.role;
 
 
 const SideBar = () => {
@@ -14,8 +15,8 @@ const SideBar = () => {
                 <Nav className="flex-column gap-3">
                 {/* anyone can see  */}
                 <Nav.Item>        
-                    <NavLink as={NavLink} to="/dashboard" end  
-                    className={({isActive}) => `nav-link fs-4 text-decoration-none ${isActive ? "text-white fw-semibold" : "text-secondary"}` }> 
+                    <NavLink  to="/dashboard" end  
+                    className={({isActive}) => `nav-link fs-6 text-decoration-none ${isActive ? "text-white fw-semibold" : "text-secondary"}` }> 
                     Dashboard Main Page
                     </NavLink>    
                 </Nav.Item>
@@ -24,12 +25,12 @@ const SideBar = () => {
                 {/* for customer */}
                 {MOCK_ROLE === 'customer' && (
                     <Nav.Item>
-                        <NavLink as={NavLink} to="/dashboard/customer/create-ticket" end 
+                        <NavLink  to="/dashboard/customer/create-ticket" end 
                         className={({isActive}) => `nav-link fs-5 text-decoration-none px-3 py-2 rounded ${isActive ? "text-white fw-semibold" : "text-secondary"}` }>
                             Create New Ticket
-                        </NavLink>
+                        </NavLink>  
                         
-                        <NavLink as={NavLink} to="/dashboard/customer/my-tickets" end 
+                        <NavLink  to="/dashboard/tickets" end 
                         className={({isActive}) => `nav-link fs-5 text-decoration-none px-3 py-2 rounded ${isActive ? "text-white fw-semibold" : "text-secondary"}`}>
                             My Tickets
                         </NavLink>
@@ -40,12 +41,12 @@ const SideBar = () => {
                 {/* for employee */}
                 {MOCK_ROLE === 'employee' &&(
                     <Nav.Item>
-                        <NavLink as={NavLink} to="/dashboard/employee/available-tickets" end 
+                        <NavLink  to="/dashboard/employee/available-tickets" end 
                         className={({isActive}) => `nav-link fs-5 text-decoration-none px-3 py-2 rounded ${isActive ? "text-white fw-semibold" : "text-secondary"}`}>
                             Available Tickets
                         </NavLink>
                         
-                        <NavLink as={NavLink} to="/dashboard/employee/my-tickets" end 
+                        <NavLink  to="/dashboard/tickets" end 
                         className={({isActive}) => `nav-link fs-5 text-decoration-none px-3 py-2 rounded ${isActive ? "text-white fw-semibold" : "text-secondary"}`}>
                             My Tickets
                         </NavLink>
@@ -55,12 +56,12 @@ const SideBar = () => {
                 {/* for admin */}
                 {MOCK_ROLE === 'admin'&&(
                     <Nav.Item>
-                        <NavLink as={NavLink} to="/dashboard/admin/all-tickets" end 
+                        <NavLink  to="/dashboard/tickets" end 
                         className={({isActive}) => `nav-link fs-5 text-decoration-none px-3 py-2 rounded ${isActive ? "text-white fw-semibold" : "text-secondary"}`}>
                             All Tickets
                         </NavLink>
 
-                        <NavLink as={NavLink} to="/dashboard/admin/all-users" end 
+                        <NavLink  to="/dashboard/admin/all-users" end 
                         className={({isActive}) => `nav-link fs-5 text-decoration-none px-3 py-2 rounded ${isActive ? "text-white fw-semibold" : "text-secondary"}`}>
                             All Users
                         </NavLink>

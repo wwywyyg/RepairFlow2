@@ -48,7 +48,7 @@ const TicketCard = ({ticket}) =>{
 
 
     return(
-        <Col md={8} lg={2} className="mb-4">
+        <Col md={8} lg={4} className="mb-4">
             <Card className="h-100 shadow-sm hover-shadow ">
 
                 {/* header Id and Status */}
