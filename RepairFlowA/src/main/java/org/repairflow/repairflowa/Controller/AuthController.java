@@ -26,6 +26,7 @@ public class AuthController {
     @Autowired
     AuthServices authServices;
 
+    //  user register
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<UserDto>> register(@Valid @RequestBody UserRegisterReq userRegisterReq) {
         UserDto user = authServices.userRegister(userRegisterReq);
@@ -33,6 +34,7 @@ public class AuthController {
         return ResponseEntity.ok(ApiResponse.success("User register Successfully",user));
     }
 
+    // User Login
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<UserLoginResponse>> login(@Valid @RequestBody UserLoginReq userLoginReq) {
         UserLoginResponse userLoginResponse = authServices.userLogin(userLoginReq);
@@ -40,7 +42,7 @@ public class AuthController {
         return ResponseEntity.ok(ApiResponse.success("Login Successfully",userLoginResponse));
     }
 
-    // Update User
+    // Update User Info , admin or suer himself
     @PreAuthorize("hasRole('ADMIN') or @userGuard.isSelf(#id)")
     @PutMapping("/user/update/{id}") //http://localhost:8080/auth/user/update/{id}
     public ResponseEntity<ApiResponse<UserDto>> updateUser(@PathVariable Long id, @RequestBody @Valid UserUpdateReq userUpdateReq) {
@@ -48,7 +50,7 @@ public class AuthController {
         return ResponseEntity.ok(ApiResponse.success("User Updated Successfully", userDto));
     }
 
-    // Read User
+    // Read User data
     @PreAuthorize("hasRole('ADMIN') or @userGuard.isSelf(#id)")
     @GetMapping("/user/{id}")
     public ResponseEntity<ApiResponse<UserDto>> getUser(@PathVariable Long id) {

@@ -1,12 +1,16 @@
 import React from "react";
 import { Nav } from "react-bootstrap";
 import {Link, NavLink} from 'react-router-dom'
-import { MOCK_USERS } from "../Data/MockData";
+// import { MOCK_USERS } from "../Data/MockData";
+import { useAuth } from "../Context/AuthContext";
 
-const MOCK_ROLE = MOCK_USERS.customer.role;
 
 
 const SideBar = () => {
+    const {user,logout} = useAuth();
+    const role = user?.role?.toLowerCase();
+    
+
     return(
         <>
             <div className="bg-dark border-end vh-100 d-flex flex-column p-3" >
@@ -23,7 +27,7 @@ const SideBar = () => {
 
 
                 {/* for customer */}
-                {MOCK_ROLE === 'customer' && (
+                {role === 'customer' && (
                     <Nav.Item>
                         <NavLink  to="/dashboard/customer/create-ticket" end 
                         className={({isActive}) => `nav-link fs-5 text-decoration-none px-3 py-2 rounded ${isActive ? "text-white fw-semibold" : "text-secondary"}` }>
@@ -39,7 +43,7 @@ const SideBar = () => {
 
 
                 {/* for employee */}
-                {MOCK_ROLE === 'employee' &&(
+                {role === 'employee' &&(
                     <Nav.Item>
                         <NavLink  to="/dashboard/employee/available-tickets" end 
                         className={({isActive}) => `nav-link fs-5 text-decoration-none px-3 py-2 rounded ${isActive ? "text-white fw-semibold" : "text-secondary"}`}>
@@ -54,7 +58,7 @@ const SideBar = () => {
                 )}
 
                 {/* for admin */}
-                {MOCK_ROLE === 'admin'&&(
+                {role === 'admin'&&(
                     <Nav.Item>
                         <NavLink  to="/dashboard/tickets" end 
                         className={({isActive}) => `nav-link fs-5 text-decoration-none px-3 py-2 rounded ${isActive ? "text-white fw-semibold" : "text-secondary"}`}>
@@ -71,9 +75,10 @@ const SideBar = () => {
 
                 {/* log out button */}  
                 <div className="mt-auto border-top pt-3 px-4">
-                    <NavLink as={Link} to="/" className="text-danger fs-5 text-decoration-none px-3 py-2 rounded" >
-                        Log Out
+                    <NavLink as={Link} to="/"  >
+                        <button className="btn btn-link text-danger  fs-5 text-decoration-none px-0 py-2 rounded" onClick={logout}>Log Out</button>
                     </NavLink>
+                    
                 </div>
             </div>
 

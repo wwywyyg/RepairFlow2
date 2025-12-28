@@ -1,9 +1,16 @@
-import { useState } from "react";
-import {Form,Button,Card} from 'react-bootstrap'
-import {Link} from 'react-router-dom';
+import { use, useState } from "react";
+import {Form,Button,Card,Alert,Spinner} from 'react-bootstrap'
+import {Link, useNavigate} from 'react-router-dom';
+import { registerUser, loginUser } from "../Api/Services/AuthServices";
+import {useAuth} from '../Context/AuthContext'
+
 const AuthForm = () => {
     // define state
+    const navigate = useNavigate();
+    const {login} = useAuth();
     const [isLogin, setIsLogin] = useState(true);
+    const [loading, setLoading] = useState(false); // loading state
+    const [error, setError] = useState(""); // error info
 
     //  form data 
     const [formData , setFormData] = useState({
@@ -19,50 +26,104 @@ const AuthForm = () => {
     // handle input change
     const handleChange =(e) =>{
         const{name,value} = e.target;
-        setFormData(prev => ({
-                ...prev,
-            [name]: value
-        }));
+        setFormData(prev => ({...prev,[name]: value}));
     };
 
     // handle submit
-    const handleSubmit = (e) =>{
+    const handleSubmit =  async (e) =>{
         e.preventDefault();
+        setLoading(true);
+        setError("");
         
         if (!isLogin) {
             if (formData.password !== formData.confirmPassword) {
+                setLoading(false);
                 alert("Passwords do not match");
                 return;
             }
         }
 
 
-        if(isLogin){
-            // const loginPayload = {
-            //     email: formData.email,
-            //     password: formData.password
-            // };
-            const {email,password} = formData;
-            const loginPayload = {email,password};
-            console.log("execute login business",loginPayload)
-        }else{
+        try{
+            if(isLogin){
+                // login logic
+                const response = await loginUser({
+                    email: formData.email,
+                    password: formData.password
+                });
+            
+                const token = response.data?.token;
+                const user = response.data?.user;
+                
+                if(token && user){
+                    // use AuthContext save token and user to local storage
+                    login(user,token);
 
-            // const registerPlayload = {
-            //     firstName: formData.firstName,
-            //     lastName: formData.lastName,
-            //     email: formData.email,
-            //     password: formData.password,
-            //     phone: formData.phone
-            // }
-            const {confirmPassword, ...registerPlayload} = formData;
-            console.log("execute register business", registerPlayload)
+                    // redirect to dashboard
+                    navigate('/dashboard');
+                }else{
+                    setError("Login in Success but Toekn or User Info not found, Please check backend response");
+                }
+                // const token = response.data?.token || response.token;;
+
+                // if(token){
+                //     // save token
+                //     localStorage.setItem('token',token);
+               
+                //     // save user info
+                //     localStorage.setItem('user',JSON.stringify(response.data.user));
+                
+                //     // redirect to dashboard
+                //     navigate('/dashboard');
+                // }else{
+                //     setError("Login in Success but Toekn not found, Please check backend");
+                // }
+            }else{
+                // register logic
+
+                const {confirmPassword, ...registerPlayload} = formData;
+                const response = await registerUser(registerPlayload);
+                alert("Register Success");
+                setIsLogin(true);
+
+                // const response = await registerUser(formData);
+                // alert("Register Success");
+                // setIsLogin(true);
+            }
+            
+        }catch(err){
+            console.error("Auth error",err);
+            // try to read backend return error message
+            const errorMessage = err.response?.data?.message || err.message;
+            setError(errorMessage);
+        }finally{
+            setLoading(false);
         }
+
+        // if(isLogin){
+            
+        //     const {email,password} = formData;
+        //     const loginPayload = {email,password};
+        //     console.log("execute login business",loginPayload)
+        // }else{
+
+        //     // const registerPlayload = {
+        //     //     firstName: formData.firstName,
+        //     //     lastName: formData.lastName,
+        //     //     email: formData.email,
+        //     //     password: formData.password,
+        //     //     phone: formData.phone
+        //     // }
+        //     const {confirmPassword, ...registerPlayload} = formData;
+        //     console.log("execute register business", registerPlayload)
+        // }
     };
 
 
     // login or register mode switch 
     const toggleMode = () =>{
         setIsLogin(!isLogin);
+        setError("");
         setFormData({firstName:'',lastName:'',email:'',password:'',confirmPassword:'',phone:''});
     }
 
@@ -75,6 +136,8 @@ const AuthForm = () => {
                 <h2 className="text-center mb-4">
                     {isLogin? 'Login to your account' : 'Create a new account'}
                 </h2>
+
+                {error && <Alert variant="danger">{error}</Alert>}
 
                 <Form onSubmit={handleSubmit}>
                     {/* in register mode  to show User first Name */}
