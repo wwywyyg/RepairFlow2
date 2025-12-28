@@ -11,3 +11,9 @@ export const loginUser = async (credentials) => {
     const response = await api.post("/auth/login", credentials);
     return response.data;
 }
+
+// read user info
+export const getCurrentUser = async () => {
+    const response = await api.get("/auth/user/me");
+    return response.data;
+}

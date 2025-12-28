@@ -7,12 +7,13 @@ import org.repairflow.repairflowa.Pojo.UserPojo.Dto.UserDto.UserDto;
 import org.repairflow.repairflowa.Pojo.UserPojo.Dto.UserDto.UserLoginReq;
 import org.repairflow.repairflowa.Pojo.UserPojo.Dto.UserDto.UserRegisterReq;
 import org.repairflow.repairflowa.Pojo.UserPojo.Dto.UserDto.UserUpdateReq;
-
+import org.repairflow.repairflowa.Security.UserPrincipal;
 import org.repairflow.repairflowa.Services.AuthServices.AuthServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -56,6 +57,18 @@ public class AuthController {
     public ResponseEntity<ApiResponse<UserDto>> getUser(@PathVariable Long id) {
         UserDto user = authServices.getUserById(id);
         return ResponseEntity.ok(ApiResponse.success("user retrieved successfully",user));
+    }
+
+    // frontend user read me
+    @GetMapping("/user/me")
+    public ResponseEntity<ApiResponse<UserDto>> getCurrentUser(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        if(userPrincipal == null) {
+            throw new BadCredentialsException("User not Authenticated");
+        }
+
+        Long userId = userPrincipal.getUserId();
+        UserDto user = authServices.getUserById(userId);
+        return ResponseEntity.ok(ApiResponse.success("Current user retrieved successfully",user));
     }
 
 }
