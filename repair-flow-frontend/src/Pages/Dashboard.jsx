@@ -2,14 +2,15 @@ import React from "react";
 import {Container , Row,Col} from "react-bootstrap"
 import { Outlet } from "react-router-dom";
 import SideBar from "../Components/SideBar";
+import { useAuth } from "../Context/AuthContext";
 
 
 
 
 
 const DashBoard = () => {
-
-    const mockRole = 'customer';
+    const { user } = useAuth();
+    const currentRole = user?.role?.toLowerCase();
     const roleTextMap  = {
         admin: 'Admin Online',
         employee: 'Employee Online',
@@ -32,7 +33,7 @@ const DashBoard = () => {
                 {/* simple header */}
                 <div className="bg-white shadow-sm p-3 mb-4 d-flex justify-content-between align-items-center h-auto" >
                     <h5 className="m-0 text-secondary">Working Station</h5>
-                    <span className="badge bg-primary fs-6">{roleTextMap[mockRole] ?? "Unknow Role"}</span>
+                    <span className="badge bg-primary fs-6">{roleTextMap[currentRole] ?? "Unknow Role"}</span>
                 </div>
 
                 <div className="px-4">

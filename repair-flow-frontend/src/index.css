@@ -5,3 +5,17 @@ html, body, #root {
   padding: 0;
   overflow-x: hidden;
 }
+
+
+.desc-clamp-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;  
+  overflow: hidden;
+  white-space: normal;    
+}
+
+
+.desc-toggle-btn {
+  font-size: 0.85rem;
+}

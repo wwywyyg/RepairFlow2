@@ -49,15 +49,6 @@ export const AuthProvider = ({children}) => {
         }
         syncUser();
 
-        // if(savedUser && savedToken){
-        //     setToken(savedToken);
-        //     try{
-        //         setUser(JSON.parse(savedUser));
-        //     } catch {
-        //         setUser(null)
-        //     }
-        // }
-        // setLoading(false);
     },[]);
 
     const login = (userData,jwtToken) =>{
@@ -85,39 +76,3 @@ export const AuthProvider = ({children}) => {
 export const useAuth = () => useContext(AuthContext);
 
 
-// if need call api to get user info by refesh page
-// useEffect(() => {
-//   const savedToken = localStorage.getItem("token");
-
-//   if (!savedToken) {
-//     setLoading(false);
-//     return;
-//   }
-
-//   const fetchMe = async () => {
-//     try {
-//       const res = await fetch("http://localhost:8080/api/auth/me", {
-//         headers: {
-//           Authorization: `Bearer ${savedToken}`,
-//         },
-//       });
-
-//       if (!res.ok) {
-//         // token 失效，登出
-//         logout();
-//         return;
-//       }
-
-//       const data = await res.json(); // 根据你后端返回结构调整
-//       setToken(savedToken);
-//       setUser(data); // 假设 data 就是 user 信息
-//       localStorage.setItem("user", JSON.stringify(data));
-//     } catch (err) {
-//       logout();
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   fetchMe();
-// }, []);

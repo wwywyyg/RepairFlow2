@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import HomePage from "./Pages/HomePage";
 import AuthPage from "./Pages/AuthPage";
 import Dashboard from "./Pages/Dashboard"
+import CreateTicketPage from './Pages/CreateTicketPage';
 
 // business components
 import TicketList from './Components/Ticket/TicketList';
@@ -31,7 +32,11 @@ function App() {
               </div>
             }/>
           {/* ticket list    | SideBar  my-tickets */}
-          <Route path='tickets' element={<TicketList/>}/>
+          <Route path='tickets' element={<TicketList type="POOL"/>}/>
+          <Route path="available-tickets" element={<TicketList type="AVAILABLE"/>}/>
+          
+          {/* customer create ticket */}
+          <Route path="customer/create-ticket" element={<CreateTicketPage/>}/>
             
           {/* ticket details | ticket Details */}
           <Route path='tickets/:ticketId' element={<TicketDetail/>}/>
