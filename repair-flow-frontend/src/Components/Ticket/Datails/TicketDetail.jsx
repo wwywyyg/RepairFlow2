@@ -5,7 +5,7 @@ import StatusProgress from "./StatusProgress";
 import TicketInfo from "./TicketInfo";
 import ChatRoom from "./ChatRoom";
 import { useAuth } from "../../../Context/AuthContext";
-import { getOneCustomerTicket,getOneEmployeeTicket } from "../../../Api/Services/TicketServices";
+import { getOneCustomerTicket,getOneEmployeeTicket,adminGetOneTicket } from "../../../Api/Services/TicketServices";
 import TicketUpdateModal from "./TicketUpdateModal";
 const TicketDetail = () =>{
     const { ticketId } = useParams();
@@ -31,6 +31,8 @@ const TicketDetail = () =>{
                     response = await getOneCustomerTicket(ticketId);
                 }else if(user.role === "EMPLOYEE"){
                     response = await getOneEmployeeTicket(ticketId);
+                }else if(user.role === "ADMIN"){
+                    response = await adminGetOneTicket(ticketId);
                 }else{ // need add admin later
                     throw new Error("Unknown user role");
                 } 

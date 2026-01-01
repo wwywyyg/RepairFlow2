@@ -2,6 +2,7 @@ import api from "../axiosConfig";
 
 const TICKETS_CUSTOMER_URL = "/auth/customer/tickets";
 const TICKETS_EMPLOYEE_URL = "/auth/employee/tickets";
+const TICKETS_ADMIN_URL = "/auth/admin";
 
 // Customer  APIs
 
@@ -91,3 +92,15 @@ export const fetchIssueTypes = (deviceCategoryId) => {
     params: deviceCategoryId ? { deviceCategoryId } : {},
   });
 };
+
+
+// Admin
+export const adminGetAllTickets = async (page = 0, size = 10,status=null) => {
+    const params = { page, size,status };
+    return await api.get(`${TICKETS_ADMIN_URL}/ticket/list-all`, { params });
+}
+
+// read one ticket 
+export const adminGetOneTicket = async (ticketId) => {
+    return await api.get(`${TICKETS_ADMIN_URL}/ticket/${ticketId}`);
+}

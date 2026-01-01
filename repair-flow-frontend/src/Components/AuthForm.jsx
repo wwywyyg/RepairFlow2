@@ -99,24 +99,6 @@ const AuthForm = () => {
         }finally{
             setLoading(false);
         }
-
-        // if(isLogin){
-            
-        //     const {email,password} = formData;
-        //     const loginPayload = {email,password};
-        //     console.log("execute login business",loginPayload)
-        // }else{
-
-        //     // const registerPlayload = {
-        //     //     firstName: formData.firstName,
-        //     //     lastName: formData.lastName,
-        //     //     email: formData.email,
-        //     //     password: formData.password,
-        //     //     phone: formData.phone
-        //     // }
-        //     const {confirmPassword, ...registerPlayload} = formData;
-        //     console.log("execute register business", registerPlayload)
-        // }
     };
 
 

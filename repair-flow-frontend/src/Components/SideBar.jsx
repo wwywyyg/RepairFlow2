@@ -60,12 +60,12 @@ const SideBar = () => {
                 {/* for admin */}
                 {role === 'admin'&&(
                     <Nav.Item>
-                        <NavLink  to="/dashboard/tickets" end 
+                        <NavLink  to="/dashboard/all-tickets" end 
                         className={({isActive}) => `nav-link fs-5 text-decoration-none px-3 py-2 rounded ${isActive ? "text-white fw-semibold" : "text-secondary"}`}>
                             All Tickets
                         </NavLink>
 
-                        <NavLink  to="/dashboard/admin/all-users" end 
+                        <NavLink  to="/dashboard/all-users" end 
                         className={({isActive}) => `nav-link fs-5 text-decoration-none px-3 py-2 rounded ${isActive ? "text-white fw-semibold" : "text-secondary"}`}>
                             All Users
                         </NavLink>

@@ -34,7 +34,7 @@ function App() {
           {/* ticket list    | SideBar  my-tickets */}
           <Route path='tickets' element={<TicketList type="POOL"/>}/>
           <Route path="available-tickets" element={<TicketList type="AVAILABLE"/>}/>
-          
+          <Route path="all-tickets" element={<TicketList type="ADMIN"/>}/>
           {/* customer create ticket */}
           <Route path="customer/create-ticket" element={<CreateTicketPage/>}/>
             

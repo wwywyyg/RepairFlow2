@@ -2,7 +2,7 @@ import React, {useState,useEffect} from "react";
 import {Row, Container,Spinner,Alert} from 'react-bootstrap'
 import TicketCard from "./TicketCard";
 import { useAuth } from "../../Context/AuthContext";
-import { getALlCustomerTickets,getAllAvailableTickets,getAllEmployeeTickets } from "../../Api/Services/TicketServices";
+import { getALlCustomerTickets,getAllAvailableTickets,getAllEmployeeTickets,adminGetAllTickets } from "../../Api/Services/TicketServices";
 
 
 const TicketList = ({type}) =>{
@@ -28,7 +28,9 @@ const TicketList = ({type}) =>{
                     }
                 }else if(type === "AVAILABLE"){
                     response = await getAllAvailableTickets(0,50);
-                }// need add admin later
+                }else if(type === "ADMIN"){
+                    response = await adminGetAllTickets(0,50);
+                }
 
                 // data parsing
                 if(response && response.data && response.data.data && Array.isArray(response.data.data.content)){
