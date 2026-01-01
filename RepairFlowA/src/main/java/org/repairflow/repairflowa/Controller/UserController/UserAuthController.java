@@ -3,8 +3,12 @@ package org.repairflow.repairflowa.Controller.UserController;
 
 
 import jakarta.validation.Valid;
+import org.repairflow.repairflowa.Exception.BusinessException;
+import org.repairflow.repairflowa.Exception.ErrorCode;
 import org.repairflow.repairflowa.Exception.Response.ApiResponse;
 import org.repairflow.repairflowa.Pojo.UserPojo.Dto.UserDto.*;
+import org.repairflow.repairflowa.Security.CurrentUser;
+import org.repairflow.repairflowa.Security.UserPrincipal;
 import org.repairflow.repairflowa.Services.UserServices.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,12 +24,6 @@ public class UserAuthController {
     private UserServices userServices;
 
 
-    // Create User
-//    @PostMapping("/create")  // localhost:8080/auth/user/register
-//    public ResponseEntity<ApiResponse<UserDto>> createUser(@Valid @RequestBody  UserRegisterReq userRegisterReq) {
-//        UserDto createdUser = userServices.createUser(userRegisterReq);
-//        return new ResponseEntity<>(ApiResponse.success("User Created Successfully", createdUser), HttpStatus.OK);
-//    }
 
     // read user
     // read one
@@ -44,10 +42,13 @@ public class UserAuthController {
 
 
 
-
     // update User Info by admin
     @PatchMapping("/update/{id}")
-    public ResponseEntity<ApiResponse<UserDto>> updateUserAdmin(@PathVariable Long id, @RequestBody @Valid UserUpdateAdmin userUpdateAdmin) {
+    public ResponseEntity<ApiResponse<UserDto>> updateUserAdmin(@PathVariable Long id, @RequestBody @Valid UserUpdateAdmin userUpdateAdmin, @CurrentUser UserPrincipal me) {
+        if(me.getUserId().equals(id)) {
+            throw new BusinessException(ErrorCode.USER_RIGHT_CONFLICT);
+        }
+
         UserDto userDto = userServices.updateUserAdmin(id, userUpdateAdmin);
         return ResponseEntity.ok(ApiResponse.success("admin Updated Successfully", userDto));
     }
@@ -60,11 +61,5 @@ public class UserAuthController {
         return ResponseEntity.ok(ApiResponse.success("User Delete Success!",null));
     }
 
-    // login
-//    @PostMapping("/login")
-//    public ResponseEntity<ApiResponse<UserDto>> login(@RequestBody @Valid UserLoginReq userLoginReq) {
-//        UserDto userDto = userServices.userLogin(userLoginReq);
-//        return ResponseEntity.ok(ApiResponse.success("User Login Successfully", userDto));
-//    }
 
 }

@@ -22,6 +22,7 @@ public enum ErrorCode {
     EMPLOYEE_NOT_FOUND(404, "Employee not found", HttpStatus.NOT_FOUND),
     USER_ALREADY_EXIST(409, "User already exists", HttpStatus.CONFLICT),
     USER_PASSWORD_ERROR(400, "Invalid username or password", HttpStatus.UNAUTHORIZED),
+    USER_RIGHT_CONFLICT(409, "User can not do this operation", HttpStatus.CONFLICT),
 
 
     //Business Module ---- TICKET

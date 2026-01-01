@@ -8,6 +8,7 @@ import CreateTicketPage from './Pages/CreateTicketPage';
 // business components
 import TicketList from './Components/Ticket/TicketList';
 import TicketDetail from './Components/Ticket/Datails/TicketDetail';
+import UserList from './Components/User/UserList';
 
 
 function App() {
@@ -40,6 +41,9 @@ function App() {
             
           {/* ticket details | ticket Details */}
           <Route path='tickets/:ticketId' element={<TicketDetail/>}/>
+
+          {/* User List  */}
+          <Route path='all-users' element={<UserList/>}/>
         </Route>
       </Routes>
     </BrowserRouter>

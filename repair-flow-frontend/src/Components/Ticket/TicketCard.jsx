@@ -61,7 +61,7 @@ const TicketCard = ({ticket , onClaimSuccess}) =>{
             <Card className="h-100 shadow-sm hover-shadow ">
 
                 {/* header Id and Status */}
-                <Card.Header className="d-flex justify-content-between align-items-center bg-secondary">
+                <Card.Header className="d-flex justify-content-between align-items-center bg-light">
                     <span className="text-muted small fs-6 fw-bold">#{ticket.id}</span>
                     <Badge className="fs-6" bg={getStatusVariant(ticket.status)}>
                         {formatStatusText(ticket.status) || ticket.status}
@@ -69,7 +69,7 @@ const TicketCard = ({ticket , onClaimSuccess}) =>{
                 </Card.Header>
 
 
-                <Card.Body className="bg-light">
+                <Card.Body className="bg-white">
                 {/* title */}
                     <Card.Title className="fw-blod">{ticket.title}</Card.Title>
 
