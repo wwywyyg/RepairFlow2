@@ -2,9 +2,11 @@ import { Client } from "@stomp/stompjs";
 
 let client = null;
 
+const WS_BASE = import.meta.env.VITE_WS_URL || "ws://localhost:8080/ws";
+
 export const connectWs = ({ token, onConnect, onError }) => {
   client = new Client({
-    brokerURL: "ws://localhost:8080/ws",
+    brokerURL: `${WS_BASE}/ws`,
     connectHeaders: {
       Authorization: `Bearer ${token}`,
     },
