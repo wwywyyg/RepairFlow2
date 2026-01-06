@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: repairflow
+      POSTGRES_PASSWORD: repairflow
+      POSTGRES_DB: repairflow
+    ports:
+      - "5435:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    image: wwywyyg/repairflow-backend:1.0.0
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/repairflow
+      SPRING_DATASOURCE_USERNAME: repairflow
+      SPRING_DATASOURCE_PASSWORD: repairflow
+      APP_JWT_SECRET: "local-dev-secret-change-me"
+      APP_JWT_EXP_MINUTES: "60"
+      APP_UPLOAD_DIR: "uploads"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./uploads:/app/uploads
+
+  frontend:
+    image: wwywyyg/repairflow-frontend:1.0.0
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+
+volumes:
+  pgdata:
