@@ -21,7 +21,7 @@ public enum ErrorCode {
     USER_NOT_FOUND(404, "User not found", HttpStatus.NOT_FOUND),
     EMPLOYEE_NOT_FOUND(404, "Employee not found", HttpStatus.NOT_FOUND),
     USER_ALREADY_EXIST(409, "User already exists", HttpStatus.CONFLICT),
-    USER_PASSWORD_ERROR(400, "Invalid username or password", HttpStatus.UNAUTHORIZED),
+    USER_PASSWORD_ERROR(401, "Invalid username or password", HttpStatus.UNAUTHORIZED),
     USER_RIGHT_CONFLICT(409, "User can not do this operation", HttpStatus.CONFLICT),
 
 
@@ -34,7 +34,7 @@ public enum ErrorCode {
     TICKET_NOT_OWN(403002, "You are not own this ticket", HttpStatus.FORBIDDEN),
     TICKET_SET_STATUS_CONFLICT(400004,"Ticket set status is not valid for this operation", HttpStatus.CONFLICT),;
 
-    private final int code;          // 业务自定义状态码 (传给前端用于判断逻辑)
-    private final String message;    // 错误信息
-    private final HttpStatus status; // HTTP 状态码 (给浏览器和网关看)
+    private final int code;
+    private final String message;
+    private final HttpStatus status;
 }

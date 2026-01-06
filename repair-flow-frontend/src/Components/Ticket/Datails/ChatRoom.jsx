@@ -1,103 +1,170 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Card, Form, Button, InputGroup, Image, CloseButton } from 'react-bootstrap'; // 新增 Image, CloseButton
+import React, { useState, useEffect, useRef } from "react";
+import { Card, Form, Button, InputGroup, Image, CloseButton } from "react-bootstrap";
+import { useAuth } from "../../../Context/AuthContext";
+import { connectWs, disconnectWs, subscribeTicket, sendTicketMessage } from "../../../Api/Services/wsClient";
+import { fetchHistory,uploadChatImage } from "../../../Api/Services/ChatServices"; // ✅ 路径按你真实项目改
+import { Modal } from "react-bootstrap";
+import '../../../index.css';
 
-const ChatRoom = ({ ticketId }) => {
-  const CURRENT_USER_ROLE = "employee";
 
-  // 1. 模拟消息数据 (新增了一个包含图片的消息例子)
-  const [messages, setMessages] = useState([
-    { id: 1, sender: "customer", text: "你好，我的屏幕摔碎了，大概要修多久？", time: "10:00 AM" },
-    // 👇 模拟客户发送的图片消息
-    { id: 10, sender: "customer", text: "", image: "https://placehold.co/300x200?text=Broken+Screen+Img", time: "10:02 AM" },
-    { id: 2, sender: "employee", text: "您好！收到照片了。通常收到设备后 24 小时内可以修好。", time: "10:05 AM" },
-    { id: 4, sender: "system", text: "系统通知：状态更新为 [DEVICE_RECEIVED]", time: "10:12 AM" },
-  ]);
+const ChatRoom = ({ ticketId, onSystemMessage }) => {
+  const token = localStorage.getItem("token");
+  const { user } = useAuth();
+  const [viewerOpen, setViewerOpen] = useState(false);
+  const [viewerImage, setViewerImage] = useState(null);
 
-  const [newMessage, setNewMessage] = useState("");
+
+  const CURRENT_USER_ROLE = (user?.role || "").toLowerCase(); // ✅ 防止 user 为空
+
+  const [messages, setMessages] = useState([]);      // ✅ 消息列表
+  const [newMessage, setNewMessage] = useState("");  // ✅ 输入框字符串
+
+  const subRef = useRef(null);
   const messagesEndRef = useRef(null);
-  
-  // --- 新增状态和 Ref 用于文件上传 ---
-  const [selectedFile, setSelectedFile] = useState(null); // 存储选中的文件对象
-  const [previewUrl, setPreviewUrl] = useState(null);     // 存储图片预览 URL
-  const fileInputRef = useRef(null);                      // 用于触发隐藏的 file input
+
+  // --- 图片预览相关（先保留，不做真实发送） ---
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const fileInputRef = useRef(null);
+
+
+  const closeViewer = () => {
+  setViewerOpen(false);
+  setViewerImage(null);
+  };
+
+  const normalize = (m) => {
+    const sender = (m.senderRole || "system").toLowerCase();
+    const isSystem = m.type === "SYSTEM" || sender === "system";
+
+    const base = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
+
+    const img = m.type === "IMAGE"? (m.content?.startsWith("http") ? m.content : `${base}${m.content}`): null;
+
+    return {
+      id: m.id || Date.now(),
+      sender: isSystem ? "system" : sender,
+      text: m.type === "IMAGE" ? "" : (m.content || ""),
+      image: img,
+      time: m.createdAt ? new Date(m.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "",
+    };
+  };
 
   // 自动滚动
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  useEffect(() => {
+    return () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    };
+  }, [previewUrl]);
 
-  // --- 新增：处理文件选择 ---
+
+  // 拉历史 + 连接WS订阅
+  useEffect(() => {
+    if (!ticketId || !token) return;
+
+    let mounted = true;
+
+    const run = async () => {
+      // 1) 拉历史
+      const history = await fetchHistory(ticketId);
+      if (!mounted) return;
+      setMessages(history.map(normalize));
+
+      // 2) WS connect + subscribe
+      connectWs({
+        token,
+        onConnect: () => {
+          subRef.current = subscribeTicket(ticketId, (incoming) => {
+            setMessages((prev) => [...prev, normalize(incoming)]);
+            if(incoming?.type === "SYSTEM") onSystemMessage?.();
+            
+          });
+        },
+        onError: (e) => console.error("WS error", e),
+      });
+    };
+
+    run();
+
+    return () => {
+      mounted = false;
+      try { subRef.current?.unsubscribe(); } catch {}
+      disconnectWs();
+    };
+  }, [ticketId, token,onSystemMessage]);
+
+  // 文件选择（预览）
   const handleFileSelect = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setSelectedFile(file);
-      // 如果是图片，创建预览 URL
-      if (file.type.startsWith('image/')) {
-        const url = URL.createObjectURL(file);
-        setPreviewUrl(url);
-      }
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setSelectedFile(file);
+
+    if (file.type.startsWith("image/")) {
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
     }
   };
 
-  // --- 新增：清除选中的文件 ---
   const clearSelectedFile = () => {
-    if (previewUrl) URL.revokeObjectURL(previewUrl); // 释放内存
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
     setSelectedFile(null);
     setPreviewUrl(null);
-    if (fileInputRef.current) fileInputRef.current.value = ""; // 重置 input
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  // --- 修改：处理发送消息 ---
-  const handleSend = (e) => {
-    e.preventDefault();
-    // 如果既没有文本也没有文件，则不发送
-    if (!newMessage.trim() && !selectedFile) return;
-
-    // 模拟构建新消息对象
-    const msg = {
-      id: Date.now(),
-      sender: CURRENT_USER_ROLE,
-      text: newMessage,
-      // 如果有预览图，暂时用预览图 URL 模拟发送成功的图片 URL
-      // 在真实后端对接时，这里应该是上传成功后后端返回的 URL
-      image: previewUrl || null, 
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    };
-
-    setMessages([...messages, msg]);
-    
-    // 发送后清空状态
-    setNewMessage("");
-    clearSelectedFile(); 
-    // 注意：真实项目中，clearSelectedFile 不能在这里调用，
-    // 因为 previewUrl 还要用于显示刚才发出去的消息。
-    // 真实流程是：上传API -> 拿到真实URL -> 用真实URL创建消息 -> 清空本地预览
-  };
-
-  // 触发隐藏的文件输入框点击
   const triggerFileInput = () => {
     fileInputRef.current?.click();
   };
 
+  // ✅ 发送：只发文字（先把 WS 跑通）
+  const handleSend = async (e) => {
+    e.preventDefault();
+    if(selectedFile){
+      try{
+          const fullUrl = await uploadChatImage(ticketId, selectedFile);
+          sendTicketMessage(ticketId, { content: fullUrl, chatMessageType: "IMAGE" });
+          clearSelectedFile();
+      }catch(error){
+          console.error("Upload file fail", error);
+          alert("Upload file fail");
+          return;
+      }
+      if(!newMessage.trim()) return;
+    }
+
+    if (!newMessage.trim()) return;
+
+    sendTicketMessage(ticketId, {
+      content: newMessage.trim(),
+      chatMessageType: "CHAT",
+    });
+
+    setNewMessage("");
+    // 图片暂时不发送，先允许用户预览也没问题
+    // clearSelectedFile(); // 你可以暂时不清
+  };
 
   return (
     <Card className="shadow-sm border-0 h-100">
       <Card.Header className="bg-white py-3 border-bottom">
         <div className="d-flex align-items-center justify-content-between gap-2">
           <strong>Live Chat</strong>
-          <span className="badge bg-success rounded-pill " style={{fontSize: '0.7rem'}}>Online</span>
+          <span className="badge bg-success rounded-pill" style={{ fontSize: "0.7rem" }}>
+            Online
+          </span>
         </div>
       </Card.Header>
 
-      {/* Message Section  */}
-      <Card.Body 
-        className="d-flex flex-column p-3 bg-light" 
-        style={{ height: '400px', overflowY: 'auto' }}
-      >
+      <Card.Body className="d-flex flex-column p-3 bg-light" style={{ height: "400px", overflowY: "auto" }}>
         {messages.map((msg) => {
           const isMe = msg.sender === CURRENT_USER_ROLE;
-          const isSystem = msg.sender === 'system';
+          const isSystem = msg.sender === "system";
 
           if (isSystem) {
             return (
@@ -108,27 +175,32 @@ const ChatRoom = ({ ticketId }) => {
           }
 
           return (
-            <div key={msg.id} className={`d-flex mb-3 ${isMe ? 'justify-content-end' : 'justify-content-start'}`}>
-              <div 
-                className={`p-2 rounded-3 shadow-sm ${
-                  isMe ? 'bg-primary text-white' : 'bg-white text-dark border'
-                }`}
-                style={{ 
-                  maxWidth: '75%',
-                  borderBottomRightRadius: isMe ? '0' : '1rem',
-                  borderBottomLeftRadius: isMe ? '1rem' : '0' 
+            <div key={msg.id} className={`d-flex mb-3 ${isMe ? "justify-content-end" : "justify-content-start"}`}>
+              <div
+                className={`p-2 rounded-3 shadow-sm ${isMe ? "bg-primary text-white" : "bg-white text-dark border"}`}
+                style={{
+                  maxWidth: "75%",
+                  borderBottomRightRadius: isMe ? "0" : "1rem",
+                  borderBottomLeftRadius: isMe ? "1rem" : "0",
                 }}
               >
-                {/* --- 修改：支持显示图片 --- */}
                 {msg.image && (
-                    <div className="mb-2">
-                        <Image src={msg.image} alt="attachment" fluid rounded className="border" style={{maxHeight: '200px', objectFit: 'cover'}} />
-                    </div>
+                  <div className="mb-2">
+                    <Image
+                      src={msg.image}
+                      alt="attachment"
+                      fluid
+                      rounded
+                      className="border"
+                      style={{ maxHeight: "200px", objectFit: "cover" , cursor: "pointer"}}
+                      onClick={()=> {setViewerImage(msg.image); setViewerOpen(true);}}
+                    />
+                  </div>
                 )}
-                {/* 显示文本 (如果有) */}
-                {msg.text && <div className="mb-1" style={{ fontSize: '0.9rem' }}>{msg.text}</div>}
-                
-                <div className={`text-end small ${isMe ? 'text-white-50' : 'text-muted'}`} style={{ fontSize: '0.7rem' }}>
+
+                {msg.text && <div className="mb-1" style={{ fontSize: "0.9rem" }}>{msg.text}</div>}
+
+                <div className={`text-end small ${isMe ? "text-white-50" : "text-muted"}`} style={{ fontSize: "0.7rem" }}>
                   {msg.time}
                 </div>
               </div>
@@ -138,52 +210,62 @@ const ChatRoom = ({ ticketId }) => {
         <div ref={messagesEndRef} />
       </Card.Body>
 
-      {/* 底部区域：包含预览和输入框 */}
       <Card.Footer className="bg-white py-3 border-top-0">
-        
-        {/* --- 新增：文件预览区域 (只有选中文件时才显示) --- */}
         {previewUrl && (
-            <div className="mb-2 position-relative d-inline-block">
-                <Image src={previewUrl} alt="Preview" thumbnail style={{ height: '80px', width: 'auto' }} />
-                {/* 关闭按钮，用于取消选择 */}
-                <CloseButton 
-                    onClick={clearSelectedFile}
-                    className="position-absolute top-0 start-100 translate-middle bg-white shadow-sm p-1" 
-                    style={{fontSize: '0.7rem'}}
-                />
-            </div>
+          <div className="mb-2 position-relative d-inline-block">
+            <Image src={previewUrl} alt="Preview" thumbnail style={{ height: "80px", width: "auto" }} />
+            <CloseButton
+              onClick={clearSelectedFile}
+              className="position-absolute top-0 start-100 translate-middle bg-white shadow-sm p-1"
+              style={{ fontSize: "0.7rem" }}
+            />
+          </div>
         )}
 
         <Form onSubmit={handleSend}>
-          {/* --- 新增：隐藏的文件输入框 --- */}
-          <input 
-              type="file" 
-              ref={fileInputRef} 
-              onChange={handleFileSelect} 
-              accept="image/png, image/jpeg, image/jpg" // 限制只能选图片，你可以去掉限制
-              style={{ display: 'none' }} 
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileSelect}
+            accept="image/png, image/jpeg, image/jpg"
+            style={{ display: "none" }}
           />
 
           <InputGroup>
-            {/* --- 新增：上传按钮 (回形针图标) --- */}
             <Button variant="outline-secondary" onClick={triggerFileInput} title="Attach File">
-              <span style={{fontSize: '1.2rem'}}>File</span>
+              <span style={{ fontSize: "1.2rem" }}>File</span>
             </Button>
-            
+
             <Form.Control
               placeholder="输入消息..."
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               className="border-secondary"
             />
-            {/* 发送按钮：只要有文本 或者 有文件，就允许点击 */}
+
             <Button variant="primary" type="submit" disabled={!newMessage.trim() && !selectedFile}>
               Send
             </Button>
           </InputGroup>
         </Form>
       </Card.Footer>
+
+      <Modal show={viewerOpen} onHide={closeViewer} centered backdrop="static" keyboard dialogClassName="image-viewer-dialog" contentClassName="image-viewer-content">
+        <Modal.Body className="p-2 d-flex flex-column align-items-center bg-dark">
+          {viewerImage && (
+          <>
+          <Image src={viewerImage} alt="Full view"  onClick={closeViewer}  style={{ maxHeight: "80vh", maxWidth: "90vw",objectFit: "contain" , cursor:"zoom-out"}}
+          />
+          <a href={viewerImage} download  target="_blank" className="btn btn-light btn-sm mt-2">
+          Download
+          </a>
+          </>
+        )}
+        </Modal.Body>
+      </Modal>
     </Card>
+
+
   );
 };
 

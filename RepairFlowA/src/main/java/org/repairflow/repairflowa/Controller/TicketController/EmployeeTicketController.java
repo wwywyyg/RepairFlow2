@@ -83,31 +83,5 @@ public class EmployeeTicketController {
         return ResponseEntity.ok(ApiResponse.success("ticket status update successfully",ticketResponse));
     }
 
-//    ADMIN
 
-//    // read all tickets
-//    @PreAuthorize("hasRole('ADMIN')")
-//    @GetMapping("/admin/list-all")
-//    public ResponseEntity<ApiResponse<Page<TicketResponse>>> getAllTickets(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-//        Pageable pageable = PageRequest.of(page, size, Sort.by("updatedAt").descending());
-//        Page<TicketResponse> pages = ticketServices.listAllTickets(pageable);
-//        return ResponseEntity.ok(ApiResponse.success("all tickets retrieved successfully",pages));
-//    }
-//
-//    // read employee own ticket
-//    @PreAuthorize("hasRole('ADMIN')")
-//    @GetMapping("/admin/list-employee-tickets/{id}")
-//    public ResponseEntity<ApiResponse<Page<TicketResponse>>> getEmployeeTickets(@PathVariable Long id) {
-//        Pageable pageable = PageRequest.of(0, 10, Sort.by("updatedAt").descending());
-//        Page<TicketResponse> pages = ticketServices.listEmployeeTickets(id, pageable);
-//        return ResponseEntity.ok(ApiResponse.success("employee-tickets retrieved successfully",pages));
-//    }
-//
-//    // read one ticket
-//    @PreAuthorize("hasRole('ADMIN')")
-//    @GetMapping("/admin/{id}")
-//    public ResponseEntity<ApiResponse<TicketResponse>> getTicket(@PathVariable Long id) {
-//        TicketResponse ticketResponse =ticketServices.getTicket(id);
-//        return ResponseEntity.ok(ApiResponse.success("ticket retrieved successfully",ticketResponse));
-//    }
 }

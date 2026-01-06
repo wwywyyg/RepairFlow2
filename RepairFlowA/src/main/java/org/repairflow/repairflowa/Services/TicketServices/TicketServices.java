@@ -2,6 +2,7 @@ package org.repairflow.repairflowa.Services.TicketServices;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.repairflow.repairflowa.Event.TicketSystemMessageEvent;
 import org.repairflow.repairflowa.Exception.AppExceptions;
 import org.repairflow.repairflowa.Exception.BusinessException;
 import org.repairflow.repairflowa.Exception.ErrorCode;
@@ -16,6 +17,7 @@ import org.repairflow.repairflowa.Pojo.UserPojo.Role;
 import org.repairflow.repairflowa.Pojo.UserPojo.User;
 import org.repairflow.repairflowa.Repository.TicketRepository;
 import org.repairflow.repairflowa.Repository.UserRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authorization.AuthorizationDeniedException;
@@ -33,6 +35,7 @@ import java.math.BigDecimal;
 public class TicketServices  implements ITicketServices {
     private final TicketRepository ticketRepository;
     private final UserRepository userRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
 
     // CUSTOMER
@@ -82,19 +85,10 @@ public class TicketServices  implements ITicketServices {
         ensureStatus(ticket,TicketStatus.QUOTED);
 
         ticket.setStatus(TicketStatus.AWAITING_DEVICE);
+        publishSystem(ticket.getId(),"System Inform: Customer approved quote, ticket Status updated to AWAITING_DEVICE");
         return TicketMapper.toTicketResponse(ticket);
     }
-//
-//    @Transactional
-//    public TicketResponse confirmAndMarkPaid(Long ticketId, Long customerId){
-//        Ticket ticket = getTicketOrThrow(ticketId);
-//        ensureCustomerOwner(ticket, customerId);
-//        ensureStatus(ticket, TicketStatus.READY_FOR_CONFIRMATION);
-//
-//        ticket.setPaid(true);
-//        ticket.setStatus(TicketStatus.PAID);
-//        return TicketMapper.toTicketResponse(ticket);
-//    }
+
 
 //     confirm and mark pay
     @Transactional
@@ -105,6 +99,7 @@ public class TicketServices  implements ITicketServices {
         ensureStatus(ticket,TicketStatus.READY_FOR_CONFIRMATION);
         ticket.setPaid(true);
         ticket.setStatus(TicketStatus.PAID);
+        publishSystem(ticket.getId(), "System Inform: Customer confirmed payment, ticket Status updated to READY_FOR_CONFIRMATION");
         return TicketMapper.toTicketResponse(ticket);
     }
 
@@ -117,6 +112,7 @@ public class TicketServices  implements ITicketServices {
         ensureStatus(ticket,TicketStatus.SHIPPED);
 
         ticket.setStatus(TicketStatus.DELIVERED);
+        publishSystem(ticket.getId(), "System Inform: Customer confirmed delivered, ticket Status updated to DELIVERED");
         return TicketMapper.toTicketResponse(ticket);
     }
 
@@ -161,6 +157,7 @@ public class TicketServices  implements ITicketServices {
         }
         ticket.setEmployee(employee);
         ticket.setStatus(TicketStatus.ASSIGNED);
+        publishSystem(ticket.getId(), "System Inform: Ticket claim by Employee , ticket Status updated to ASSIGNED");
         return TicketMapper.toTicketResponse(ticket);
     }
 
@@ -173,6 +170,7 @@ public class TicketServices  implements ITicketServices {
 
         ticket.setQuoteAmount(req.quoteAmount());
         ticket.setStatus(TicketStatus.QUOTED);
+        publishSystem(ticket.getId(), "System Inform: Ticket quote updated, ticket Status updated to QUOTED");
         return TicketMapper.toTicketResponse(ticket);
     }
 //update status
@@ -185,6 +183,7 @@ public class TicketServices  implements ITicketServices {
         TicketStatus next = req.status();
         validateEmployeeTransition(ticket.getStatus(),next);
         ticket.setStatus(next);
+        publishSystem(ticket.getId(), "System Inform: Ticket Status updated to [" + next.name() + "]" );
         return TicketMapper.toTicketResponse(ticket);
     }
 
@@ -245,4 +244,14 @@ public class TicketServices  implements ITicketServices {
             default -> throw new BusinessException(ErrorCode.TICKET_SET_STATUS_CONFLICT);
         }
     }
+
+    private void publishSystem(Long ticketId, String msg) {
+        eventPublisher.publishEvent(new TicketSystemMessageEvent(ticketId, msg));
+    }
+
+
+
+    // SYSTEM
+
+
 }

@@ -5,7 +5,7 @@ package org.repairflow.repairflowa.Pojo.ChatPojo;
  * @date 1/1/26 11:13
  * @description TODO: Description
  */
-public enum MessageType {
+public enum ChatMessageType {
     CHAT,
     IMAGE,
     SYSTEM

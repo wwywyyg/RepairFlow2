@@ -31,4 +31,12 @@ public class JwtServices {
     public DecodedJWT verifyToken(String token) {
         return JWT.require(Algorithm.HMAC256(secret)).build().verify(token);
     }
+
+    public DecodedJWT decodeAndVerify(String token) {return verifyToken(token);}
+
+    public String extractEmail(String token) {return decodeAndVerify(token).getSubject();}
+
+    public Long extractUserId(String token) {return decodeAndVerify(token).getClaim("uid").asLong();}
+
+    public String extractRole(String token) {return decodeAndVerify(token).getClaim("role").asString();}
 }

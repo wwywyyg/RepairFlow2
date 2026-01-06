@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.repairflow.repairflowa.Services.JwtServices.JwtServices;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -65,6 +64,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String p = request.getServletPath();
-        return p.equals("/register") || p.equals("/login") || p.equals("/logout");
+
+        if (p.startsWith("/ws")) return true;
+        return p.equals("/auth/register") || p.equals("/auth/login") || p.equals("/auth/logout");
     }
 }

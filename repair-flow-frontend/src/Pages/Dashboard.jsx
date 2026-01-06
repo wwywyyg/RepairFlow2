@@ -24,7 +24,7 @@ const DashBoard = () => {
             <Row className="g-0">
 
                 {/* left: sidebar  2 of 5 */}
-                <Col lg={2} md={3} className="d-none d-md-block">
+                <Col lg={2} md={3} className="d-none d-md-block" style={{height:"100vh", overflowY:"auto" ,position:"sticky",top:0}}>
                     <SideBar/>
                 </Col>
 

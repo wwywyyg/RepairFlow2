@@ -34,7 +34,6 @@ public class CustomerTicketController {
     public ResponseEntity<ApiResponse<TicketResponse>> createTicket(@RequestBody @Valid TicketCreateReq createReq, @CurrentUser UserPrincipal me) {
         TicketResponse ticketResponse = ticketServices.createTicket(createReq, me.getUserId());
         return ResponseEntity.ok(ApiResponse.success("Ticket created", ticketResponse));
-//        return ticketServices.createTicket(createReq,me.getUserId());
     }
 
     // read one ticket

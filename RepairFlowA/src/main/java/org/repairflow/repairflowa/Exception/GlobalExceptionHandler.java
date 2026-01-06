@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,69 +55,11 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ApiResponse.error(ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR.value()),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-
-//    @ExceptionHandler
-//    @ResponseStatus(HttpStatus.NOT_FOUND)
-//    @ResponseBody
-//    public ApiResponse<Object> handleResourceNotFoundException(AppExceptions.ResourceNotFoundException ex){
-//        return ApiResponse.error(ex.getMessage());
-//    }
-
-
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST) // 400
-//    @ResponseBody
-//    public ApiResponse<Object> handleValidationException(MethodArgumentNotValidException ex) {
-//        Map<String, String> errors = new HashMap<>();
-//        ex.getBindingResult().getAllErrors().forEach((error) -> {
-//            String fieldName = ((FieldError) error).getField();
-//            String errorMessage = error.getDefaultMessage();
-//            errors.put(fieldName, errorMessage);
-//        });
-//
-//        return ApiResponse.error("Validation failed", 400, errors);
-//    }
-
-
-
-
-//
-//    @ExceptionHandler(BadCredentialsException.class)
-//    public ApiResponse<Object> handleBadCredException(BadCredentialsException ex) {
-//        return ApiResponse.error("Invalid email or password", 401);
-//    }
-//
-//
-//    @ExceptionHandler(UsernameNotFoundException.class)
-//    public ApiResponse<Object> handleUsernameNotFoundException(UsernameNotFoundException ex) {
-//        return ApiResponse.error("Username not found", 404);
-//    }
-
-//    @ExceptionHandler(AuthenticationException.class)
-//    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-//    @ResponseBody
-//    public ApiResponse<Object> handleAuthenticationException(AuthenticationException ex) {
-//        logger.error("Authentication failed for user: {}", ex.getMessage());
-//        return ApiResponse.error("Invalid username or password", 401);
-//    }
-
-//    @ExceptionHandler(AuthorizationDeniedException.class)
-//    @ResponseStatus(HttpStatus.FORBIDDEN)
-//    @ResponseBody
-//    public ApiResponse<Object> handleAuthorizationDeniedException(AuthorizationDeniedException ex) {
-//        logger.error("Authorization failed for user: {}", ex.getMessage());
-//        return ApiResponse.error("You do not have permission to access this resource", 403);
-//    }
-
-
-//    @ExceptionHandler(Exception.class)
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR) // 500
-//    @ResponseBody
-//    public ApiResponse<Object> handleGenericException(Exception ex) {
-//
-//        logger.error("An unexpected error occurred: ", ex);
-//
-//
-//        return ApiResponse.error("An internal server error occurred", 500);
-//    }
+    @ExceptionHandler({NoHandlerFoundException.class, NoResourceFoundException.class})
+    public ResponseEntity<ApiResponse<Object>> handleNotFound(Exception ex) {
+        return new ResponseEntity<>(
+                ApiResponse.error("Endpoint not found", HttpStatus.NOT_FOUND.value()),
+                HttpStatus.NOT_FOUND
+        );
+    }
 }

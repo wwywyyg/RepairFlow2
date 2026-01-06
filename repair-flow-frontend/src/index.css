@@ -19,3 +19,17 @@ html, body, #root {
 .desc-toggle-btn {
   font-size: 0.85rem;
 }
+
+.image-viewer-dialog {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  max-width: none !important;
+  margin: 0 auto;
+}
+
+.image-viewer-content {
+  width: auto !important;
+  background: transparent;
+  border: none;
+}
