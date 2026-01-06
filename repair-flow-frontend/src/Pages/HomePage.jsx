@@ -47,7 +47,7 @@ const HomePage = () => {
 
                     {/* right side Image */}
                     <Col lg={6} className="text-center ">
-                    <Image src="/src/Images/right_image_3.png" fluid className="rounded-3" alt="Reapir Service Illurstration"/>
+                    <Image src="images/right_image_3.png" fluid className="rounded-3" alt="Reapir Service Illurstration"/>
                     </Col>
                 </Row>
             </Container>
@@ -61,7 +61,7 @@ const HomePage = () => {
                     <Col md={4}>
                         <div className="p-3">
                             <div className="mb-3">
-                                <Image src="/src/Images/function_1_1_1.png" fluid className="rounded-3" alt="Post ticket image"/>
+                                <Image src="images/function_1_1_1.png" fluid className="rounded-3" alt="Post ticket image"/>
                             </div>
                             <h3 className="fw-bold">Create Tickets in Seconds</h3>
                             <p className="text-muted mt-3">Enter device details and issue description to create a repair ticket instantly. Tasks are assigned automatically.</p>
@@ -72,7 +72,7 @@ const HomePage = () => {
                     <Col md={4}>
                         <div className="p-3">
                             <div className="mb-3">
-                                <Image src="/src/Images/function_2_2_2.png" fluid className="rounded-3" alt=" Direct Communication image"/>
+                                <Image src="images/function_2_2_2.png" fluid className="rounded-3" alt=" Direct Communication image"/>
                             </div>
                             <h3 className="fw-bold">Clear, Direct Communication</h3>
                             <p className="text-muted mt-3">Built-in real-time chat lets technicians and customers communicate directly, with images and status updates.</p>
@@ -83,7 +83,7 @@ const HomePage = () => {
                     <Col md={4}>
                         <div className="p-3 ">
                             <div className="mb-3">
-                                <Image src="/src/Images/function_3_3_3.png" fluid className="rounded-3" alt="Track Every Repair image"/>
+                                <Image src="images/function_3_3_3.png" fluid className="rounded-3" alt="Track Every Repair image"/>
                             </div>
                             <h3 className="fw-bold">Track Every Repair</h3>
                             <p className="text-muted mt-3">Track every stage of the repair process — from quote pending to in progress and completed — all updated in real time.</p>
