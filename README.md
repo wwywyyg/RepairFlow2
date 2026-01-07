@@ -15,6 +15,11 @@ Frontend: http://localhost:3000
 Backend API: http://localhost:8080
 PostgreSQL: localhost:5435
 
+Test Account：
+Admin    -  Email: admin@test.com , Password: 11223344
+Employee -  Email: employee@test.com , Password: 11223344
+Customer -  Email: customer@test.com , Password: 11223344
+
 
 ## Screenshots
 - Auth form & JWT entry point
@@ -23,15 +28,15 @@ PostgreSQL: localhost:5435
 
 ## Dashboard / Ticket List
 - Role-based navigation + ticket status
-![Dashboard Page](screenshots/DashboardPage.png)
+![Dashboard Page](Screenshots/DashboardPage.png)
 
 ## Ticket Detail + Real-Time Chat
 - Ticket info + WebSocket chat + image upload
-![Ticket Details Page](screenshots/TicketDetails.png)
+![Ticket Details Page](Screenshots/TicketDetails.png)
 
 ## Admin User Management
 - Role update panel
-![Role Management ](screenshots/AdminRoleManagement.png)
+![Role Management ](Screenshots/AdminRoleManagement.png)
 
 
 ## Key Features
