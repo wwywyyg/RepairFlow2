@@ -18,7 +18,7 @@ PostgreSQL: localhost:5435
 
 ## Screenshots
 - Auth form & JWT entry point
-![Auth Page](screenshots/AuthComponent.png)
+![Auth Page](Screenshots/AuthComponent.png)
 
 
 ## Dashboard / Ticket List
