@@ -15,11 +15,11 @@ Frontend: http://localhost:3000
 Backend API: http://localhost:8080
 PostgreSQL: localhost:5435
 
-Test Account: Admin 
+### Test Account: Admin 
 - Email: admin@test.com , Password: 11223344
-Test Account: Employee
+### Test Account: Employee
 - Email: employee@test.com , Password: 11223344
-Test Account: Customer
+### Test Account: Customer
 - Email: customer@test.com , Password: 11223344
 
 
