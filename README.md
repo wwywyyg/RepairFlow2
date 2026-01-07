@@ -16,9 +16,12 @@ Backend API: http://localhost:8080
 PostgreSQL: localhost:5435
 
 Test Account：
-Admin    -  Email: admin@test.com , Password: 11223344
-Employee -  Email: employee@test.com , Password: 11223344
-Customer -  Email: customer@test.com , Password: 11223344
+Admin 
+- Email: admin@test.com , Password: 11223344
+Employee
+- Email: employee@test.com , Password: 11223344
+Customer
+- Email: customer@test.com , Password: 11223344
 
 
 ## Screenshots
@@ -51,7 +54,20 @@ Customer -  Email: customer@test.com , Password: 11223344
 - Dockerized Full-Stack Setup
 
 ## Ticket Workflow
-PENDING → ASSIGNED → QOUTED → AWAITING_DEVICE → DEVICE_RECEIVED → IN_PROGRESS → READY_FOR_COMFIRMATION → PAID → SHIPPED → DELIVERED
+PENDING → ASSIGNED → QUOTED → AWAITING_DEVICE → DEVICE_RECEIVED → IN_PROGRESS → READY_FOR_COMFIRMATION → PAID → SHIPPED → DELIVERED
+
+### Customer-operable status
+- QUOTED → AWAITING_DEVICE
+- READY_FOR_COMFIRMATION → PAID
+- SHIPPED → DELIVERED
+
+### Employee-operable status
+- PENDING → ASSIGNED
+- ASSIGNED → QOUTED
+- AWAITING_DEVICE → DEVICE_RECEIVED
+- DEVICE_RECEIVED → IN_PROGRESS
+- IN_PROGRESS → READY_FOR_COMFIRMATION
+- PAID → SHIPPED
 
 ## Tech Stack
 
