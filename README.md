@@ -15,12 +15,11 @@ Frontend: http://localhost:3000
 Backend API: http://localhost:8080
 PostgreSQL: localhost:5435
 
-Test Account：
-Admin 
+Test Account: Admin 
 - Email: admin@test.com , Password: 11223344
-Employee
+Test Account: Employee
 - Email: employee@test.com , Password: 11223344
-Customer
+Test Account: Customer
 - Email: customer@test.com , Password: 11223344
 
 
@@ -53,7 +52,7 @@ Customer
 - Flyway Database Migrations
 - Dockerized Full-Stack Setup
 
-## Ticket Workflow
+## Ticket Status Workflow
 PENDING → ASSIGNED → QUOTED → AWAITING_DEVICE → DEVICE_RECEIVED → IN_PROGRESS → READY_FOR_COMFIRMATION → PAID → SHIPPED → DELIVERED
 
 ### Customer-operable status
