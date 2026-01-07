@@ -32,7 +32,8 @@ Customer -  Email: customer@test.com , Password: 11223344
 
 ## Ticket Detail + Real-Time Chat
 - Ticket info + WebSocket chat + image upload
-![Ticket Details Page](Screenshots/TicketDetails.png)
+![Ticket Details](Screenshots/TicketDetails.png)
+![Real Time Chat](Screenshots/RealTimeChat.png)
 
 ## Admin User Management
 - Role update panel
