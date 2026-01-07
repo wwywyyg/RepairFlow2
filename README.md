@@ -24,22 +24,21 @@ PostgreSQL: localhost:5435
 
 
 ## Screenshots
-- Auth form & JWT entry point
-![Auth Page](Screenshots/AuthComponent.png)
+Auth form & JWT entry point
+![Auth Page](screenshots/AuthComponent.png)
 
 
 ## Dashboard / Ticket List
-- Role-based navigation + ticket status
-![Dashboard Page](Screenshots/DashboardPage.png)
+Role-based navigation + ticket status
+![Dashboard Page](screenshots/DashboardPage.png)
 
 ## Ticket Detail + Real-Time Chat
-- Ticket info + WebSocket chat + image upload
-![Ticket Details](Screenshots/TicketDetails.png)
-![Real Time Chat](Screenshots/RealTimeChat.png)
+Ticket info + WebSocket chat + image upload
+![Real Time Chat](screenshots/RealTimeChat.png)
 
 ## Admin User Management
-- Role update panel
-![Role Management ](Screenshots/AdminRoleManagement.png)
+Role update panel
+![Role Management ](screenshots/AdminRoleManagement.png)
 
 
 ## Key Features
@@ -62,7 +61,7 @@ PENDING → ASSIGNED → QUOTED → AWAITING_DEVICE → DEVICE_RECEIVED → IN_P
 
 ### Employee-operable status
 - PENDING → ASSIGNED
-- ASSIGNED → QOUTED
+- ASSIGNED → QUOTED
 - AWAITING_DEVICE → DEVICE_RECEIVED
 - DEVICE_RECEIVED → IN_PROGRESS
 - IN_PROGRESS → READY_FOR_COMFIRMATION
@@ -89,3 +88,11 @@ PENDING → ASSIGNED → QUOTED → AWAITING_DEVICE → DEVICE_RECEIVED → IN_P
 ### DevOps
 - Docker
 - Docker Compose
+
+Future Improvements
+- Payment integration (Stripe)
+- Cloud file storage (AWS S3)
+- CI/CD pipeline & cloud deployment
+
+## Author
+- Guang Yang
