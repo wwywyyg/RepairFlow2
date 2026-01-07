@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/auth/admin")
+@RequestMapping("/auth/admin/ticket")
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminTicketController {
@@ -30,7 +30,7 @@ public class AdminTicketController {
     //    ADMIN
 
     // read all tickets
-    @GetMapping("/ticket/list-all")
+    @GetMapping("/list-all")
     public ResponseEntity<ApiResponse<Page<TicketResponse>>> getAllTickets(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("updatedAt").descending());
         Page<TicketResponse> pages = ticketServices.listAllTickets(pageable);
@@ -38,7 +38,7 @@ public class AdminTicketController {
     }
 
     // read employee own ticket
-    @GetMapping("/ticket/list-employee-tickets/{id}")
+    @GetMapping("/list-employee-tickets/{id}")
     public ResponseEntity<ApiResponse<Page<TicketResponse>>> getEmployeeTickets(@PathVariable Long id) {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("updatedAt").descending());
         Page<TicketResponse> pages = ticketServices.listEmployeeTickets(id, pageable);
@@ -46,7 +46,7 @@ public class AdminTicketController {
     }
 
     // read one ticket
-    @GetMapping("/ticket/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<TicketResponse>> getTicket(@PathVariable Long id) {
         TicketResponse ticketResponse =ticketServices.getTicket(id);
         return ResponseEntity.ok(ApiResponse.success("ticket retrieved successfully",ticketResponse));

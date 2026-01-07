@@ -20,7 +20,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/meta")
+@RequestMapping("/meta")
 @RequiredArgsConstructor
 public class TicketMetaController {
 

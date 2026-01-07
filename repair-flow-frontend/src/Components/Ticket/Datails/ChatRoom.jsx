@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Card, Form, Button, InputGroup, Image, CloseButton } from "react-bootstrap";
 import { useAuth } from "../../../Context/AuthContext";
 import { connectWs, disconnectWs, subscribeTicket, sendTicketMessage } from "../../../Api/Services/wsClient";
-import { fetchHistory,uploadChatImage } from "../../../Api/Services/ChatServices"; // ✅ 路径按你真实项目改
+import { fetchHistory,uploadChatImage } from "../../../Api/Services/ChatServices"; 
 import { Modal } from "react-bootstrap";
 import '../../../index.css';
 
@@ -14,15 +14,15 @@ const ChatRoom = ({ ticketId, onSystemMessage }) => {
   const [viewerImage, setViewerImage] = useState(null);
 
 
-  const CURRENT_USER_ROLE = (user?.role || "").toLowerCase(); // ✅ 防止 user 为空
+  const CURRENT_USER_ROLE = (user?.role || "").toLowerCase(); 
 
-  const [messages, setMessages] = useState([]);      // ✅ 消息列表
-  const [newMessage, setNewMessage] = useState("");  // ✅ 输入框字符串
+  const [messages, setMessages] = useState([]);      
+  const [newMessage, setNewMessage] = useState("");  
 
   const subRef = useRef(null);
   const messagesEndRef = useRef(null);
 
-  // --- 图片预览相关（先保留，不做真实发送） ---
+
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const fileInputRef = useRef(null);
@@ -37,9 +37,10 @@ const ChatRoom = ({ ticketId, onSystemMessage }) => {
     const sender = (m.senderRole || "system").toLowerCase();
     const isSystem = m.type === "SYSTEM" || sender === "system";
 
-    const base = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
+    // const base = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
+    const origin = window.location.origin;
 
-    const img = m.type === "IMAGE"? (m.content?.startsWith("http") ? m.content : `${base}${m.content}`): null;
+    const img = m.type === "IMAGE"? (m.content?.startsWith("http") ? m.content : `${origin}${m.content}`): null;
 
     return {
       id: m.id || Date.now(),
@@ -50,7 +51,7 @@ const ChatRoom = ({ ticketId, onSystemMessage }) => {
     };
   };
 
-  // 自动滚动
+  // scroll
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -62,14 +63,14 @@ const ChatRoom = ({ ticketId, onSystemMessage }) => {
   }, [previewUrl]);
 
 
-  // 拉历史 + 连接WS订阅
+  //  history and connect ws subscribe
   useEffect(() => {
     if (!ticketId || !token) return;
 
     let mounted = true;
 
     const run = async () => {
-      // 1) 拉历史
+      // 1) fetch history
       const history = await fetchHistory(ticketId);
       if (!mounted) return;
       setMessages(history.map(normalize));
@@ -97,7 +98,7 @@ const ChatRoom = ({ ticketId, onSystemMessage }) => {
     };
   }, [ticketId, token,onSystemMessage]);
 
-  // 文件选择（预览）
+  // file select
   const handleFileSelect = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -122,7 +123,7 @@ const ChatRoom = ({ ticketId, onSystemMessage }) => {
     fileInputRef.current?.click();
   };
 
-  // ✅ 发送：只发文字（先把 WS 跑通）
+  // handlesend
   const handleSend = async (e) => {
     e.preventDefault();
     if(selectedFile){
@@ -146,8 +147,7 @@ const ChatRoom = ({ ticketId, onSystemMessage }) => {
     });
 
     setNewMessage("");
-    // 图片暂时不发送，先允许用户预览也没问题
-    // clearSelectedFile(); // 你可以暂时不清
+    clearSelectedFile();
   };
 
   return (
@@ -237,7 +237,7 @@ const ChatRoom = ({ ticketId, onSystemMessage }) => {
             </Button>
 
             <Form.Control
-              placeholder="输入消息..."
+              placeholder="Please Enter message...."
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               className="border-secondary"

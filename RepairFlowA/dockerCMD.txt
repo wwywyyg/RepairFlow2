@@ -22,3 +22,29 @@ docker run -d --name pg-repairflow \
   docker exec -it pg-repairflow bash
 
   psql -U repairflow -d repairflow
+
+  // local run psql
+  docker compose -f docker-compose.dev-db.yml up -d
+
+  // local full run
+  docker compose -f docker-compose.local-full.yml down -v
+  docker compose -f docker-compose.local-full.yml up -d --build
+
+  // pull hub full run
+  docker compose -f docker-compose.prod.yml down -v
+  docker compose -f docker-compose.prod.yml up -d
+
+
+  // push new build to hub backend
+  docker buildx build \
+    --platform linux/amd64,linux/arm64 \
+    -t wwywyyg/repairflow-backend:1.0.1 \
+    -t wwywyyg/repairflow-backend:latest \
+    --push .
+
+  // push new build to hub frontend
+  docker buildx build \
+    --platform linux/amd64,linux/arm64 \
+    -t wwywyyg/repairflow-backend:1.0.1 \
+    -t wwywyyg/repairflow-backend:latest \
+    --push .

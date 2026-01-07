@@ -64,20 +64,6 @@ const AuthForm = () => {
                 }else{
                     setError("Login in Success but Toekn or User Info not found, Please check backend response");
                 }
-                // const token = response.data?.token || response.token;;
-
-                // if(token){
-                //     // save token
-                //     localStorage.setItem('token',token);
-               
-                //     // save user info
-                //     localStorage.setItem('user',JSON.stringify(response.data.user));
-                
-                //     // redirect to dashboard
-                //     navigate('/dashboard');
-                // }else{
-                //     setError("Login in Success but Toekn not found, Please check backend");
-                // }
             }else{
                 // register logic
 
@@ -85,10 +71,6 @@ const AuthForm = () => {
                 const response = await registerUser(registerPlayload);
                 alert("Register Success");
                 setIsLogin(true);
-
-                // const response = await registerUser(formData);
-                // alert("Register Success");
-                // setIsLogin(true);
             }
             
         }catch(err){

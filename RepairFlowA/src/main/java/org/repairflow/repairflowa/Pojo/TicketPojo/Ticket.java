@@ -39,8 +39,8 @@ public class Ticket {
     @Column(name="issue_type_id")
     private Long issueTypeId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @JoinColumn(name = "customer_id",nullable = false)
     private User customer;
 
     @ManyToOne(fetch = FetchType.LAZY)

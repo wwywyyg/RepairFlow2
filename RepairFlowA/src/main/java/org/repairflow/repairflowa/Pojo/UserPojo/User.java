@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.repairflow.repairflowa.Pojo.TicketPojo.Ticket;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -43,11 +44,11 @@ public class User implements UserDetails {
     @Column(name = "is_active")
     private boolean isActive = true;
 
-//    @OneToMany(mappedBy = "customer")
-//    private List<Ticket> customerTickets;
-//
-//    @OneToMany(mappedBy = "customer")
-//    private List<Ticket> employeeTickets;
+    @OneToMany(mappedBy = "customer")
+    private List<Ticket> customerTickets;
+
+    @OneToMany(mappedBy = "employee")
+    private List<Ticket> employeeTickets;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

@@ -83,12 +83,12 @@ export const employeeClaimTicket = async (ticketId) => {
 
 // get all device categories data
 export const fetchDevicesCategories = async () => {
-    return await api.get("api/meta/device-categories");
+    return await api.get("/meta/device-categories");
 }
 
 // get all issue types data
 export const fetchIssueTypes = (deviceCategoryId) => {
-  return api.get("/api/meta/issue-types", {
+  return api.get("/meta/issue-types", {
     params: deviceCategoryId ? { deviceCategoryId } : {},
   });
 };

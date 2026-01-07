@@ -10,4 +10,15 @@ export default defineConfig({
       },
     }),
   ],
+   server: {
+    proxy: {
+      "/auth": "http://localhost:8080",
+      "/user": "http://localhost:8080",
+      "/tickets": "http://localhost:8080",
+      "/api": "http://localhost:8080",       
+      "/uploads": "http://localhost:8080",
+      "/meta": "http://localhost:8080",
+      "/ws": { target: "http://localhost:8080", ws: true },
+    },
+  },
 })
