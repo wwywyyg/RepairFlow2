@@ -54,14 +54,14 @@ public class ChatRestController {
             @CurrentUser UserPrincipal me
     ) throws IOException {
 
-        // 1) 基本校验
+        // 1) basic Verification
         if (file.isEmpty()) throw new BusinessException(ErrorCode.BAD_REQUEST, "File is empty");
         String ct = file.getContentType();
         if (ct == null || !ct.startsWith("image/")) {
             throw new BusinessException(ErrorCode.BAD_REQUEST, "Only image files are allowed");
         }
 
-        // 2) 存文件
+        // 2) save file
         Files.createDirectories(Path.of(uploadDir));
         String ext = Optional.ofNullable(file.getOriginalFilename())
                 .filter(n -> n.contains("."))
@@ -72,7 +72,7 @@ public class ChatRestController {
         Path dest = Path.of(uploadDir, filename);
         file.transferTo(dest);
 
-        // 3) 返回可访问 url（本地开发）
+        // 3) return local url
         String url = "/uploads/" + filename;
         return ApiResponse.success("uploaded", Map.of("url", url));
     }
