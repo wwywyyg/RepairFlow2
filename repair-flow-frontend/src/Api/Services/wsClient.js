@@ -4,8 +4,14 @@ let client = null;
 
 // const WS_BASE = import.meta.env.VITE_WS_URL || "ws://localhost:8080/ws";
 
-const wsScheme = window.location.protocol === "https:" ? "wss" : "ws";
-const wsUrl = `${wsScheme}://${window.location.host}/ws`;
+// const wsScheme = window.location.protocol === "https:" ? "wss" : "ws";
+// const wsUrl = `${wsScheme}://${window.location.host}/ws`;
+
+const wsUrl = import.meta.env.VITE_WS_BASE_URL;
+console.log("VITE_WS_BASE_URL =", wsUrl);
+
+console.log("MODE", import.meta.env.MODE);
+console.log("WS", import.meta.env.VITE_WS_BASE_URL);
 
 export const connectWs = ({ token, onConnect, onError }) => {
   client = new Client({
