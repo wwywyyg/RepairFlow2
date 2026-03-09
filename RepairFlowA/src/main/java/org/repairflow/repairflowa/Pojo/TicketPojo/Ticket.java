@@ -1,10 +1,7 @@
 package org.repairflow.repairflowa.Pojo.TicketPojo;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.repairflow.repairflowa.Pojo.UserPojo.User;
 
 import java.math.BigDecimal;
@@ -15,12 +12,15 @@ import java.time.LocalDateTime;
  * @date 11/23/25 AM4:42
  * @description TODO: Description
  */
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "tickets")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString(exclude = {"customer", "employee"})
+@EqualsAndHashCode(exclude = {"customer", "employee"})
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

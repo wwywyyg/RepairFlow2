@@ -9,7 +9,7 @@ docker run -d --name pg-repairflow \
   -e POSTGRES_USER=repairflow \
   -e POSTGRES_PASSWORD=repairflow \
   -e POSTGRES_DB=repairflow \
-  -p 5433:5432 \
+  -p 5435:5432 \
   postgres:16
 
 
@@ -38,7 +38,7 @@ docker run -d --name pg-repairflow \
   // push new build to hub backend
   docker buildx build \
     --platform linux/amd64,linux/arm64 \
-    -t wwywyyg/repairflow-backend:1.0.1 \
+    -t wwywyyg/repairflow-backend:1.0.2 \
     -t wwywyyg/repairflow-backend:latest \
     --push .
 
