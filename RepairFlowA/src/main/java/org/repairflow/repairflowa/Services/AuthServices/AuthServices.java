@@ -97,7 +97,7 @@ public class AuthServices {
 
     //read User Info
     public UserDto getUserById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(()-> new AppExceptions.ResourceNotFoundException("User Not Found " + "user ID : " + id));
+        User user = userRepository.findById(id).orElseThrow(()-> new AppExceptions.UsernameNotFoundException("User Not Found " + "user ID : " + id));
         return UserMapper.toUserDto(user);
     }
 

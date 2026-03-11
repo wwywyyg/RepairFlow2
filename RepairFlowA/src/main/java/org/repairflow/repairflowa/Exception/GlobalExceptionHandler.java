@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
@@ -34,9 +35,27 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler({AuthorizationDeniedException.class, AuthenticationException.class})
+//    @ExceptionHandler({AuthorizationDeniedException.class, AuthenticationException.class})
+//    public ResponseEntity<ApiResponse<Object>> handleAccessDenied(Exception ex){
+//        return new ResponseEntity<>(ApiResponse.error("Access denied",HttpStatus.FORBIDDEN.value()),HttpStatus.FORBIDDEN);
+//    }
+
+    // 401
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ApiResponse<Object>> handleAuthenticationException(AuthenticationException ex){
+        return new ResponseEntity<>(
+                ApiResponse.error("Invalid username or password", HttpStatus.UNAUTHORIZED.value()),
+                HttpStatus.UNAUTHORIZED
+        );
+    }
+
+    // 403
+    @ExceptionHandler({AccessDeniedException.class, AuthorizationDeniedException.class})
     public ResponseEntity<ApiResponse<Object>> handleAccessDenied(Exception ex){
-        return new ResponseEntity<>(ApiResponse.error("Access denied",HttpStatus.FORBIDDEN.value()),HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(
+                ApiResponse.error("Access denied", HttpStatus.FORBIDDEN.value()),
+                HttpStatus.FORBIDDEN
+        );
     }
 
 
@@ -60,6 +79,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(
                 ApiResponse.error("Endpoint not found", HttpStatus.NOT_FOUND.value()),
                 HttpStatus.NOT_FOUND
+        );
+    }
+
+    @ExceptionHandler(BaseAppException.class)
+    public ResponseEntity<ApiResponse<Object>> handleBaseAppException(BaseAppException ex) {
+        return new ResponseEntity<>(
+                ApiResponse.error(ex.getMessage(), ex.getHttpStatus().value()),
+                ex.getHttpStatus()
         );
     }
 }

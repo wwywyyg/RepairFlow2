@@ -89,7 +89,6 @@ public class UserRepositoryTest extends IntegrationTestBase {
     @Test
     void shouldReturnEmptyWhenUserDoesNotExist() {
         Optional<User> found = userRepository.findByEmail("hello@world.com");
-
         assertThat(found).isEmpty();
     }
 

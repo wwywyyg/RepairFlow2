@@ -35,6 +35,10 @@ public final class AppExceptions {
         }
     }
 
+    public static class UsernameNotFoundException extends BaseAppException {
+        public UsernameNotFoundException(String message) {super(message, HttpStatus.UNAUTHORIZED);}
+    }
+
     /**
      * 409 - data conflict
      */
