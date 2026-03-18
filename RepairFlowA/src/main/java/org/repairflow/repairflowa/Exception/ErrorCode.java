@@ -34,6 +34,7 @@ public enum ErrorCode {
     TICKET_NOT_OWN(403002, "You are not own this ticket", HttpStatus.FORBIDDEN),
     TICKET_SET_STATUS_CONFLICT(400004,"Ticket set status is not valid for this operation", HttpStatus.CONFLICT),;
 
+
     private final int code;
     private final String message;
     private final HttpStatus status;

@@ -428,7 +428,7 @@ public class TicketServicesUnitTest {
         verify(eventPublisher, never()).publishEvent(any(TicketSystemMessageEvent.class));
     }
 
-    
+
 
 
 

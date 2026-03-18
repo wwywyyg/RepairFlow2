@@ -20,6 +20,7 @@ import org.repairflow.repairflowa.Repository.UserRepository;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.stereotype.Service;
 
@@ -167,6 +168,7 @@ public class TicketServices  implements ITicketServices {
     public TicketResponse setQuote(Long ticketId, Long employeeId, TicketQuoteReq req) {
         Ticket ticket = getTicketOrThrow(ticketId);
         ensureStatus(ticket, TicketStatus.ASSIGNED);
+        ensureAssignedToEmployee(ticket, employeeId);
 
         ticket.setQuoteAmount(req.quoteAmount());
         ticket.setStatus(TicketStatus.QUOTED);
@@ -242,6 +244,12 @@ public class TicketServices  implements ITicketServices {
             case READY_FOR_CONFIRMATION -> ensureCurrentIn(current, TicketStatus.IN_PROGRESS);
             case SHIPPED -> ensureCurrentIn(current, TicketStatus.PAID);
             default -> throw new BusinessException(ErrorCode.TICKET_SET_STATUS_CONFLICT);
+        }
+    }
+
+    private void ensureAssignedToEmployee(Ticket ticket, Long employeeId) {
+        if (ticket.getEmployee() == null || !ticket.getEmployee().getId().equals(employeeId)) {
+            throw new BusinessException(ErrorCode.TICKET_NOT_OWN);
         }
     }
 

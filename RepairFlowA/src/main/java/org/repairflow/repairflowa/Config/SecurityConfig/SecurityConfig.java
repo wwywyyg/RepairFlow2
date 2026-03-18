@@ -97,6 +97,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,"/user/**").authenticated()
                         .requestMatchers(HttpMethod.PUT,"/user/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE,"/user/**").hasRole("ADMIN")
+                        .requestMatchers("/actuator/health").permitAll()
+                        .requestMatchers("/actuator/info").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

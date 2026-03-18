@@ -39,7 +39,7 @@ public class TicketSecurityTest extends IntegrationTestBase {
 
     @Test
     @DisplayName("Should return 403 with anonymous")
-    void shouldReturn401WithAnonymous()throws Exception {
+    void shouldReturn403WithAnonymous()throws Exception {
         mockMvc.perform(get("/auth/employee/tickets/available"))
                 .andExpect(status().isForbidden());
     }
