@@ -1,6 +1,7 @@
 package org.repairflow.repairflowa.support;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.repairflow.repairflowa.RepairFlowAApplication;
 import org.repairflow.repairflowa.Repository.TicketRepository;
 import org.repairflow.repairflowa.Repository.UserRepository;
@@ -49,7 +50,7 @@ public abstract class IntegrationTestBase {
     @Autowired
     protected TicketRepository ticketRepository;
 
-    @AfterEach
+    @BeforeEach
     void cleanUpBase() {
         ticketRepository.deleteAllInBatch();
         userRepository.deleteAllInBatch();
