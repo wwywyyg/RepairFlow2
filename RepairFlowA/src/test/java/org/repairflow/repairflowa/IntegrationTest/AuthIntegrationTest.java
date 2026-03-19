@@ -48,10 +48,6 @@ public class AuthIntegrationTest extends IntegrationTestBase {
     private ObjectMapper objectMapper;
 
 
-    @BeforeEach
-    void cleanUp() {
-        userRepository.deleteAll();
-    }
 
     // register
     @Test

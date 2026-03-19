@@ -55,11 +55,6 @@ public class EmployeeTicketIntegrationTest extends IntegrationTestBase {
     @Autowired
     private EntityManager entityManager;
 
-    @BeforeEach
-    void cleanUp() {
-        ticketRepository.deleteAll();
-        userRepository.deleteAll();
-    }
 
 
     /***

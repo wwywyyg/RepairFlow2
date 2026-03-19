@@ -47,10 +47,6 @@ public class userUpdateTest extends IntegrationTestBase {
     private PasswordEncoder passwordEncoder;
 
 
-    @BeforeEach
-    void cleanUp() {
-        userRepository.deleteAll();
-    }
 
     // update      @PutMapping("/user/update/{id}")
     @Test
@@ -198,25 +194,25 @@ public class userUpdateTest extends IntegrationTestBase {
 
 
     @Test
-    @DisplayName("Should return 404 when requested user does not exist")
-    void shouldReturn404WhenRequestedUserDoesNotExist() throws Exception {
+    @DisplayName("Should return 401 when requested user does not exist")
+    void shouldReturn401WhenRequestedUserDoesNotExist() throws Exception {
         User admin = buildUser("admin2@test.com", Role.ADMIN);
         String adminToken = loginAndGetToken("admin2@test.com", "passwordTest");
 
         mockMvc.perform(get("/auth/user/999999")
                         .header("Authorization", "Bearer " + adminToken))
                 .andDo(print())
-                .andExpect(status().isNotFound());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
-    @DisplayName("Should return 401 when getting user without token")
+    @DisplayName("Should return 403 when getting user without token")
     void shouldReturn401WhenGetUserWithoutToken() throws Exception {
         User user = buildUser("customer5@test.com", Role.CUSTOMER);
 
         mockMvc.perform(get("/auth/user/" + user.getId()))
                 .andDo(print())
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
 
@@ -249,8 +245,8 @@ public class userUpdateTest extends IntegrationTestBase {
 
 
     @Test
-    @DisplayName("Should return 404 when current user from token does not exist")
-    void shouldReturn404WhenCurrentUserDoesNotExist() throws Exception {
+    @DisplayName("Should return 401 when current user from token does not exist")
+    void shouldReturn401WhenCurrentUserDoesNotExist() throws Exception {
         User user = buildUser("ghost@test.com", Role.CUSTOMER);
         String token = loginAndGetToken("ghost@test.com", "passwordTest");
 
@@ -260,7 +256,7 @@ public class userUpdateTest extends IntegrationTestBase {
         mockMvc.perform(get("/auth/user/me")
                         .header("Authorization", "Bearer " + token))
                 .andDo(print())
-                .andExpect(status().isNotFound());
+                .andExpect(status().isUnauthorized());
     }
 
 

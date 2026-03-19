@@ -1,5 +1,6 @@
 package org.repairflow.repairflowa.support;
 
+import org.junit.jupiter.api.AfterEach;
 import org.repairflow.repairflowa.RepairFlowAApplication;
 import org.repairflow.repairflowa.Repository.TicketRepository;
 import org.repairflow.repairflowa.Repository.UserRepository;
@@ -11,8 +12,6 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -20,19 +19,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @date 3/8/26 16:43
  * @description TODO: Description
  */
-@Testcontainers
+
 @SpringBootTest(classes = RepairFlowAApplication.class)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 
 public abstract class IntegrationTestBase {
 
-    @Container
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16")
-            .withDatabaseName("repairflow_test")
-            .withUsername("test")
-            .withPassword("test");
+    static final PostgreSQLContainer<?> postgres =
+            new PostgreSQLContainer<>("postgres:16")
+                    .withDatabaseName("repairflow_test")
+                    .withUsername("test")
+                    .withPassword("test");
 
+    static {
+        postgres.start();
+        System.out.println("TESTCONTAINER STARTED: " + postgres.getJdbcUrl());
+    }
 
     @Autowired
     protected MockMvc mockMvc;
@@ -45,20 +48,16 @@ public abstract class IntegrationTestBase {
 
     @Autowired
     protected TicketRepository ticketRepository;
-//
-//    @Autowired
-//    protected DatabaseCleaner databaseCleaner;
-//
-//    @BeforeEach
-//    void cleanDatabase() {
-//        databaseCleaner.clean();
-//    }
+
+    @AfterEach
+    void cleanUpBase() {
+        ticketRepository.deleteAllInBatch();
+        userRepository.deleteAllInBatch();
+    }
 
     @DynamicPropertySource
     static void configurePostgres(DynamicPropertyRegistry registry) {
-        System.out.println("JDBC URL = " + postgres.getJdbcUrl());
-        System.out.println("DB USER = " + postgres.getUsername());
-        System.out.println("DB PASS = " + postgres.getPassword());
+
 
         registry.add("spring.datasource.url", postgres::getJdbcUrl);
         registry.add("spring.datasource.username", postgres::getUsername);

@@ -22,10 +22,7 @@ public class TicketSecurityTest extends IntegrationTestBase {
     private TicketRepository ticketRepository;
 
 
-    @BeforeEach
-    void cleanUp(){
-        ticketRepository.deleteAll();
-    }
+
 
 
     @Test

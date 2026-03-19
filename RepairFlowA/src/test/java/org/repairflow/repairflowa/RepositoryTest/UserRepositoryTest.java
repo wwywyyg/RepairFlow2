@@ -22,10 +22,7 @@ public class UserRepositoryTest extends IntegrationTestBase {
     @Autowired
     private UserRepository userRepository;
 
-    @BeforeEach
-    void cleanUp() {
-        userRepository.deleteAll();
-    }
+
 
     @Test
     void shouldSaveUser() {

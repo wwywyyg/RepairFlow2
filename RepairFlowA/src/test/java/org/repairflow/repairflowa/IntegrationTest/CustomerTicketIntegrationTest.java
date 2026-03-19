@@ -56,11 +56,6 @@ public class CustomerTicketIntegrationTest extends IntegrationTestBase {
     private PasswordEncoder passwordEncoder;
 
 
-    @BeforeEach
-    void cleanUp() {
-        ticketRepository.deleteAll();
-        userRepository.deleteAll();
-    }
 
     /***
      * ==================

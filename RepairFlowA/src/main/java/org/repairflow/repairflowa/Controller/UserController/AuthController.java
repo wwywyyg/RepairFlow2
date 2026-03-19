@@ -66,6 +66,7 @@ public class AuthController {
             throw new BadCredentialsException("User not Authenticated");
         }
 
+
         Long userId = userPrincipal.getUserId();
         UserDto user = authServices.getUserById(userId);
         return ResponseEntity.ok(ApiResponse.success("Current user retrieved successfully",user));

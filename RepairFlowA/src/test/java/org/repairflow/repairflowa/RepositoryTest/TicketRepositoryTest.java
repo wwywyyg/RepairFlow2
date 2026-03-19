@@ -32,11 +32,7 @@ public class TicketRepositoryTest  extends IntegrationTestBase {
     @Autowired
     UserRepository userRepository;
 
-    @BeforeEach
-    void cleanUp(){
-        ticketRepository.deleteAll();
-        userRepository.deleteAll();
-    }
+
 
 
     @Test

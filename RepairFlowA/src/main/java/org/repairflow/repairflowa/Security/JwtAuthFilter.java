@@ -56,7 +56,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             }catch (JWTVerificationException e) {
                 log.warn("JWT verification failed: {}",e.getMessage());
 
+            }catch (org.springframework.security.core.userdetails.UsernameNotFoundException e) {
+                log.warn("User from token no longer exists: {}", e.getMessage());
+                SecurityContextHolder.clearContext();
             }
+
         }
         filterChain.doFilter(request, response);
     }

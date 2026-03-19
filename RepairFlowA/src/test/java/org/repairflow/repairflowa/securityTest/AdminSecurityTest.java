@@ -31,10 +31,7 @@ public class AdminSecurityTest extends IntegrationTestBase {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @BeforeEach
-    void cleanUp() {
-        userRepository.deleteAll();
-    }
+
 
     @Test
     @WithMockUser(roles = "ADMIN")
