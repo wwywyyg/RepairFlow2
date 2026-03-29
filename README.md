@@ -1,10 +1,17 @@
 # RepairFlow — Full-Stack Repair Ticketing Platform
 
-A full-stack repair ticketing platform built with Spring Boot, React, and PostgreSQL, featuring JWT authentication, role-based access control, ticket workflow management, and real-time chat with file uploads.
+## Highlights
+- Backend-focused full-stack application using Java (Spring Boot)
+- Designed and implemented 15+ RESTful APIs (HTTP + JSON)
+- Real-time chat system using WebSocket (STOMP)
+- CI/CD pipeline with GitHub Actions (build, test, deploy)
+- Dockerized deployment on AWS EC2 with Cloudflare integration
+- Role-based access control with JWT authentication
+
+A backend-focused full-stack repair platform designed with Java (Spring Boot) and React, featuring scalable REST APIs, real-time communication, and production-style deployment with CI/CD and cloud infrastructure.
 
 ## Demo (Docker-based)
-This project is fully containerized.
-You can run the entire system locally with Docker Compose.
+Fully containerized application. Run the entire system locally using Docker Compose:
 
 ```
  docker compose -f docker-compose.prod.yml up -d
@@ -15,13 +22,32 @@ Frontend: http://localhost:3000
 Backend API: http://localhost:8080
 PostgreSQL: localhost:5435
 
-### Test Account: Admin 
-- Email: admin@test.com , Password: 11223344
-### Test Account: Employee
-- Email: employee@test.com , Password: 11223344
-### Test Account: Customer
-- Email: customer@test.com , Password: 11223344
+## Test Account Info 
+```
+|    Role     |      Test Account        |  Test password  | 
+|   Admin     |     admin@test.com       |    11223344     |
+|  Employee   |    employee@test.com     |    11223344     |
+|  Customer   |    customer@test.com     |    11223344     |
+```
 
+## Architecture Overview
+- Backend: Spring Boot (REST APIs, WebSocket, JWT Security)
+- Frontend: React (role-based UI, API integration via Axios)
+- Database: PostgreSQL (managed with Flyway migrations)
+- Deployment: Dockerized services running on AWS EC2
+- Networking: Cloudflare for DNS, SSL/TLS, and public access
+- API Communication: REST (HTTP/JSON) + WebSocket (STOMP)
+
+## CI/CD Pipeline
+Implemented CI/CD pipelines using GitHub Actions:
+- Automated build, test, and deployment workflows on each code push
+- Ensured consistent and repeatable release processes
+- Reduced manual deployment errors and improved system reliability
+
+## Testing
+- API testing using Postman to validate request/response behavior
+- Verified authentication flows and role-based access control
+- Tested ticket workflow transitions and real-time messaging features
 
 ## Screenshots
 Auth form & JWT entry point
@@ -40,14 +66,13 @@ Ticket info + WebSocket chat + image upload
 Role update panel
 ![Role Management ](screenshots/AdminRoleManagement.png)
 
-
 ## Key Features
-- JWT Authentication with Spring Security 6
+- RESTful APIs with Spring Boot
+- JWT Authentication with Spring Security
 - Role-Based Access Control (ADMIN / EMPLOYEE / CUSTOMER)
-- Repair Ticket Workflow (State Machine)
 - Real-Time Chat using WebSocket (STOMP)
+- Repair Ticket Workflow (State Machine)
 - Image & File Uploads
-- Admin User & Ticket Management
 - Flyway Database Migrations
 - Dockerized Full-Stack Setup
 
@@ -89,10 +114,9 @@ PENDING → ASSIGNED → QUOTED → AWAITING_DEVICE → DEVICE_RECEIVED → IN_P
 - Docker
 - Docker Compose
 
-Future Improvements
+## Future Improvements
 - Payment integration (Stripe)
 - Cloud file storage (AWS S3)
-- CI/CD pipeline & cloud deployment
 
 ## Author
 - Guang Yang
