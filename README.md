@@ -43,11 +43,18 @@ Implemented CI/CD pipelines using GitHub Actions:
 - Automated build, test, and deployment workflows on each code push
 - Ensured consistent and repeatable release processes
 - Reduced manual deployment errors and improved system reliability
+- Integrated testing into CI pipeline to ensure code quality before deployment
 
 ## Testing
-- API testing using Postman to validate request/response behavior
-- Verified authentication flows and role-based access control
-- Tested ticket workflow transitions and real-time messaging features
+Implemented a layered testing strategy across the application:
+
+- Unit tests for service layer using JUnit and Mockito to validate business logic and edge cases
+- Integration tests for controller layer using Spring Boot Test and MockMvc to verify API behavior and HTTP responses
+- Repository tests to validate database queries, pagination, and filtering logic
+- Security tests using @WithMockUser to verify authentication and role-based authorization (401/403 scenarios)
+- End-to-end API validation using Postman
+
+These tests ensure system reliability, prevent regressions, and validate behavior across all application layers.
 
 ## Screenshots
 Auth form & JWT entry point
@@ -110,9 +117,19 @@ PENDING → ASSIGNED → QUOTED → AWAITING_DEVICE → DEVICE_RECEIVED → IN_P
 ### Database
 - PostgreSQL 16
 
+### Testing
+- JUnit 5
+- Mockito
+- Spring Boot Test (MockMvc)
+- Postman
+
+See test implementations in:
+- src/test/java/org/repairflow/repairflowa
+
 ### DevOps
 - Docker
 - Docker Compose
+- GitHub Actions (CI/CD)
 
 ## Future Improvements
 - Payment integration (Stripe)
