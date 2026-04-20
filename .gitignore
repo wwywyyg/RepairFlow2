@@ -1,0 +1,83 @@
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# IDE / Editor
+# =========================
+.idea/
+.vscode/
+*.iml
+
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.cache/
+
+# Virtual Environment
+venv/
+.venv/
+env/
+
+# =========================
+# Playwright / Test Artifacts
+# =========================
+playwright-report/
+test-results/
+*.log
+
+# Storage state
+customer_auth.json
+employee_auth.json
+*.auth.json
+
+# =========================
+# Environment Variables
+# =========================
+.env
+.env.*
+*.env
+
+# Frontend local env
+repair-flow-frontend/.env.development
+
+# =========================
+# Uploads / Generated Files
+# =========================
+RepairFlowA/uploads/
+
+
+# =========================
+# Node / Frontend
+# =========================
+node_modules/
+dist/
+build/
+coverage/
+
+# =========================
+# Java / Spring Boot
+# =========================
+target/
+*.jar
+*.war
+*.ear
+
+# =========================
+# Database
+# =========================
+*.sqlite
+*.db
+
+# =========================
+# Misc
+# =========================
+*.swp
+*.swo

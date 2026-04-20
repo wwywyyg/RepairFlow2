@@ -16,7 +16,7 @@ const TicketCard = ({ticket , onClaimSuccess}) =>{
             case 'PENDING': return 'secondary';           
             case 'ASSIGNED': return 'info';                
             case 'QUOTED': return 'warning';               
-            case 'AWAITING_DEVICE': return 'light';        
+            case 'AWAITING_DEVICE': return 'info';        
             case 'DEVICE_RECEIVED': return 'info';        
             case 'IN_PROGRESS': return 'primary';          
             case 'READY_FOR_CONFIRMATION': return 'success'; 

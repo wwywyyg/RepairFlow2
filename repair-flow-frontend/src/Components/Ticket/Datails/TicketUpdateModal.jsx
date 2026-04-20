@@ -207,6 +207,7 @@ const TicketUpdateModal = ({ show, onClose, ticket, role, onSave }) => {
               <Form.Control
                 type="number"
                 min="0"
+                step="0.01"
                 value={formData.quoteAmount ?? ""}
                 onChange={(e) =>
                   handleChange(
@@ -232,7 +233,7 @@ const TicketUpdateModal = ({ show, onClose, ticket, role, onSave }) => {
             </div>
           </Form.Group>
 
-          {/* Actions 区：Approve Quote / Mark Delivered */}
+          {/* Actions ：Approve Quote / Mark Delivered */}
           {userRole === "CUSTOMER" && (
             <div className="mt-4 border-top pt-3">
               <h6 className="mb-3">Actions</h6>

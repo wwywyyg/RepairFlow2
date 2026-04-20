@@ -15,7 +15,7 @@ export const uploadChatImage = async (ticketId, file) => {
     headers: { "Content-Type": "multipart/form-data" },
   });
 
-  // ✅ ApiResponse<Map> => res.data.data.url
+  // ApiResponse<Map> => res.data.data.url
   const path = res.data?.data?.url; // "/uploads/xxx.jpg"
   if (!path) throw new Error("upload api did not return url");
 
