@@ -31,7 +31,7 @@ jobs:
         run: python -m playwright install --with-deps chromium
 
       - name: Start application stack
-        run: docker compose -f docker-compose.ci.yml up -d --build
+        run: docker compose -f RepairFlowA/docker-compose.ci.yml up -d --build
 
       - name: Wait for backend health
         run: |
@@ -42,7 +42,7 @@ jobs:
             sleep 5
           done
           echo "Backend did not become ready in time"
-          docker compose -f docker-compose.ci.yml logs
+          docker compose -f RepairFlowA/docker-compose.ci.yml logs
           exit 1
 
       - name: Wait for frontend
@@ -54,7 +54,7 @@ jobs:
             sleep 5
           done
           echo "Frontend did not become ready in time"
-          docker compose -f docker-compose.ci.yml logs
+          docker compose -f RepairFlowA/docker-compose.ci.yml logs
           exit 1
 
       - name: Run Playwright tests
@@ -73,8 +73,8 @@ jobs:
 
       - name: Show Docker logs on failure
         if: failure()
-        run: docker compose -f docker-compose.ci.yml logs
+        run: docker compose -f RepairFlowA/docker-compose.ci.yml logs
 
       - name: Tear down stack
         if: always()
-        run: docker compose -f docker-compose.ci.yml down -v
+        run: docker compose -f RepairFlowA/docker-compose.ci.yml down -v
