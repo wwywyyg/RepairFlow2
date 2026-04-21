@@ -60,7 +60,7 @@ jobs:
       - name: Run Playwright tests
         env:
           BASE_URL: http://127.0.0.1:3000
-	      HEADLESS: true
+          HEADLESS: true
         run: pytest Tests -v
 
       - name: Upload test artifacts
