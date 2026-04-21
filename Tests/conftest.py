@@ -1,3 +1,5 @@
+import os
+
 import pytest
 from playwright.sync_api import sync_playwright
 from pathlib import Path
@@ -6,7 +8,8 @@ from page.Employee.employee_claim_ticket import employee_claim_ticket
 from page.workflow.customer_work_flow import Customer_WorkFlow
 from page.workflow.employee_work_flow import Employee_WorkFlow
 
-BASE_URL = "http://localhost:5173"
+# BASE_URL = "http://localhost:5173"
+BASE_URL = os.getenv("BASE_URL", "http://localhost:3000")
 # CUSTOMER_STORAGE_STATE = "testCode/pages/Setup/customer_auth.json"
 BASE_DIR = Path(__file__).resolve().parent   # testCode
 CUSTOMER_STORAGE_STATE = BASE_DIR / "page" / "Setup" / "customer_auth.json"

@@ -1,17 +1,23 @@
 # build stage
 FROM node:20-alpine AS build
 WORKDIR /app
+
+ARG VITE_API_BASE_URL
+ARG VITE_WS_URL
+
+ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
+ENV VITE_WS_URL=$VITE_WS_URL
+
 COPY package*.json ./
 RUN npm ci
+
 COPY . .
+
 RUN npm run build
 
-# run stage (nginx)
 FROM nginx:alpine
-# 把打包产物放进 nginx 默认静态目录
-COPY --from=build /app/dist /usr/share/nginx/html
 
-# SPA 路由支持：刷新不 404（Vite + React 必备）
+COPY --from=build /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
