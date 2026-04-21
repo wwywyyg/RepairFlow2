@@ -1,6 +1,6 @@
 from page.Chatpage.Chatpage import ChatPage
 
-TICKET_ID = "15"
+
 IMAGE_PATH = "page/uploads/testImage.jpg"
 
 '''

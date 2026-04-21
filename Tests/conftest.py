@@ -48,7 +48,7 @@ def setup_auth_states(browser):
     customer_page.fill("input[name='email']", "customer@test.com")
     customer_page.fill("input[name='password']", "11223344")
     customer_page.click("button:has-text('Login')")
-    customer_page.wait_for_url("http://localhost:5173/dashboard")
+    customer_page.wait_for_url("**/dashboard")
 
     customer_context.storage_state(path=CUSTOMER_STORAGE_STATE)
     customer_page.close()
@@ -62,7 +62,7 @@ def setup_auth_states(browser):
     employee_page.fill("input[name='email']", "employee@test.com")
     employee_page.fill("input[name='password']", "11223344")
     employee_page.click("button:has-text('Login')")
-    employee_page.wait_for_url("http://localhost:5173/dashboard")
+    employee_page.wait_for_url("**/dashboard")
 
 
     employee_context.storage_state(path=EMPLOYEE_STORAGE_STATE)

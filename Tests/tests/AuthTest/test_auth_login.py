@@ -1,6 +1,8 @@
 from page.AuthPage.login_page import LoginPage
 
-HOME_URL = "http://localhost:5173"
+import os
+
+HOME_URL = os.getenv("BASE_URL", "http://localhost:5173")
 
 
 # ---------------------------

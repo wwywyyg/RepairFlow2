@@ -1,7 +1,8 @@
 from page.AuthPage.register_page import RegisterPage
 import random
+import os
 
-BASE_URL = "http://localhost:5173"
+BASE_URL = os.getenv("BASE_URL", "http://localhost:5173")
 
 
 def go_to_register_page(guest_page):
