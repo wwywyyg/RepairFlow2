@@ -42,7 +42,11 @@ class ChatPage:
         self.send_button.click()
 
     def assert_text_message_visible(self, text: str) -> None:
-        expect(self.page.get_by_text(text, exact=True).last).to_be_visible(timeout=5000)
+        locator = self.page.get_by_text(text, exact=True)
+        locator.wait_for(timeout=2000)
+        expect(locator).to_be_visible()
+        print("Current page content:")
+        print(self.page.content())
 
     # ---------- file upload ----------
 
