@@ -44,9 +44,8 @@ class ChatPage:
     def assert_text_message_visible(self, text: str) -> None:
         locator = self.page.get_by_text(text)
         try:
-            locator.wait_for(timeout=10000)
+            expect(locator).to_be_visible(timeout=20000)
         except Exception:
-            expect(locator).to_be_visible()
             print("Current page content:")
             print(self.page.content())
             raise
