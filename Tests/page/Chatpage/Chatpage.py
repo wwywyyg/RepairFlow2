@@ -19,7 +19,7 @@ class ChatPage:
 
     #  open ticket details page
     def go_to_ticket_details_page(self,ticket_id: str):
-        self.page.goto(f"http://localhost:5173/dashboard/tickets/{ticket_id}")
+        self.page.goto(f"**/dashboard/tickets/{ticket_id}")
 
 
     # ---------- basic assertions ----------

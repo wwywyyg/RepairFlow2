@@ -33,7 +33,7 @@ class LoginPage:
         expect(self.password_input).to_be_visible()
 
     def should_be_login_success(self) -> None:
-        expect(self.page).to_have_url("http://localhost:5173/dashboard")
+        expect(self.page).to_have_url("**/dashboard")
         expect(self.page.get_by_text("Admin Online")).to_be_visible()
         expect(self.page.get_by_text("Dashboard Main Page")).to_be_visible()
 

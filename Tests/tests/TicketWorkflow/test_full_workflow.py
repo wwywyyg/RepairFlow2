@@ -1,12 +1,12 @@
 from page.workflow.customer_work_flow import Customer_WorkFlow
 from page.workflow.employee_work_flow import Employee_WorkFlow
 
-def test_full_ticket_workflow(customer_page, employee_page,preparefull_workflow_ticket):
+def test_full_ticket_workflow(customer_page, employee_page,prepare_full_workflow_ticket):
     employee_page = Employee_WorkFlow(employee_page)
     customer_page = Customer_WorkFlow(customer_page)
 
     #  employee claim ticket  --  status : ASSIGNED
-    ticket_id = preparefull_workflow_ticket
+    ticket_id = prepare_full_workflow_ticket
 
     '''
         ==========================================

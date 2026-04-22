@@ -40,7 +40,7 @@ should login successfully with valid credentials
 '''
 def test_should_login_with_valid_credentials(guest_page):
     login_page = go_to_login_page(guest_page)
-    login_page.login("admin@test.com", "11223344")
+    login_page.login("employee@test.com", "11223344")
     login_page.should_be_login_success()
 
 

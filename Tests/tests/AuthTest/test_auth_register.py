@@ -113,7 +113,7 @@ def test_email_already_exists(guest_page):
         guest_page,
         first_name="Test",
         last_name="User",
-        email="test@test.com",
+        email="employee@test.com",
         password="11223344",
         confirm_password="11223344",
         phone="1234567890",

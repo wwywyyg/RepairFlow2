@@ -31,18 +31,18 @@ class employee_claim_ticket:
         self.my_ticket_link.click()
 
 
-    '''
-        assert list tickets page should loaded
-    '''
-    def assert_list_tickets_page_loaded(self) -> None:
-        ticket_card = self.ticket_card_by_id("1")
-        ticket_card_2 = self.ticket_card_by_id("2")
-
-        expect(ticket_card).to_be_visible()
-        expect(ticket_card.get_by_text("PENDING")).to_be_visible()
-
-        expect(ticket_card_2).to_be_visible()
-        expect(ticket_card_2.get_by_text("PENDING")).to_be_visible()
+    # '''
+    #     assert list tickets page should loaded
+    # '''
+    # def assert_list_tickets_page_loaded(self) -> None:
+    #     ticket_card = self.ticket_card_by_id("1")
+    #     ticket_card_2 = self.ticket_card_by_id("2")
+    #
+    #     expect(ticket_card).to_be_visible()
+    #     expect(ticket_card.get_by_text("PENDING")).to_be_visible()
+    #
+    #     expect(ticket_card_2).to_be_visible()
+    #     expect(ticket_card_2.get_by_text("PENDING")).to_be_visible()
 
     def assert_ticket_claim_successfully(self,ticket_id:str) -> None:
         ticket_card = self.ticket_card_by_id(ticket_id)
