@@ -22,6 +22,9 @@ class ChatPage:
     #  open ticket details page
     def go_to_ticket_details_page(self,ticket_id: str):
         self.page.goto(f"{BASE_URL}/dashboard/tickets/{ticket_id}")
+        self.message_input.wait_for(state="visible", timeout=10000)
+        expect(self.message_input).to_be_editable(timeout=5000)
+
 
 
     # ---------- basic assertions ----------
@@ -39,6 +42,8 @@ class ChatPage:
 
     def send_text_message(self, text: str) -> None:
         self.fill_message(text)
+        expect(self.message_input).to_have_value(text, timeout=5000)
+        expect(self.send_button).to_be_enabled(timeout=5000)
         self.send_button.click()
 
     def assert_text_message_visible(self, text: str) -> None:
