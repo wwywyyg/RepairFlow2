@@ -1,5 +1,5 @@
 from playwright.sync_api import Page, expect
-
+import re
 
 class LoginPage:
     def __init__(self, page: Page):
@@ -33,8 +33,8 @@ class LoginPage:
         expect(self.password_input).to_be_visible()
 
     def should_be_login_success(self) -> None:
-        expect(self.page).to_have_url("**/dashboard")
-        expect(self.page.get_by_text("Admin Online")).to_be_visible()
+        expect(self.page).to_have_url(re.compile(r".*/dashboard$"))
+        expect(self.page.get_by_text("Employee Online")).to_be_visible()
         expect(self.page.get_by_text("Dashboard Main Page")).to_be_visible()
 
     def should_show_alert_message_with_invalid_credentials(self) -> None:

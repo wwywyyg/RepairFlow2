@@ -8,8 +8,8 @@ from page.Employee.employee_claim_ticket import employee_claim_ticket
 from page.workflow.customer_work_flow import Customer_WorkFlow
 from page.workflow.employee_work_flow import Employee_WorkFlow
 
-# BASE_URL = "http://localhost:5173"
-BASE_URL = os.getenv("BASE_URL", "http://localhost:3000")
+# HOME_URL = "http://localhost:5173"
+BASE_URL = os.getenv("BASE_URL", "http://localhost:5173")
 # CUSTOMER_STORAGE_STATE = "testCode/pages/Setup/customer_auth.json"
 BASE_DIR = Path(__file__).resolve().parent   # testCode
 CUSTOMER_STORAGE_STATE = BASE_DIR / "page" / "Setup" / "customer_auth.json"
@@ -35,11 +35,10 @@ def browser(playwright_instance):
 def setup_auth_states(browser):
     """
     Run once before all tests.
-    Make sure customer_auth.json and employee_auth.json exist.
     """
 
     CUSTOMER_STORAGE_STATE.parent.mkdir(parents=True, exist_ok=True)
-
+    print(f"Using BASE_URL: {BASE_URL}")
     # customer auth
     customer_context = browser.new_context()
     customer_page = customer_context.new_page()
