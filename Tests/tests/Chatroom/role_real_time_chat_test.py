@@ -1,7 +1,15 @@
 from page.Chatpage.Chatpage import ChatPage
 
 
-IMAGE_PATH = "page/uploads/testImage.jpg"
+from pathlib import Path
+
+IMAGE_PATH = Path(__file__).resolve().parents[2] / "page" / "uploads" / "testImage.jpg"
+
+'''
+    check image exists
+'''
+def test_role_realtime_chat_workflow(customer_page, employee_page, prepare_full_workflow_ticket):
+    assert IMAGE_PATH.exists(), f"Image not found: {IMAGE_PATH}"
 
 '''
     customer message  visible to employee
