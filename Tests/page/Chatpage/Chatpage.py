@@ -1,6 +1,8 @@
 from pathlib import Path
 import re
 from playwright.sync_api import Page, expect
+import os
+BASE_URL = os.getenv("BASE_URL", "http://localhost:5173")
 
 
 class ChatPage:
@@ -19,7 +21,7 @@ class ChatPage:
 
     #  open ticket details page
     def go_to_ticket_details_page(self,ticket_id: str):
-        self.page.goto(f"**/dashboard/tickets/{ticket_id}")
+        self.page.goto(f"{BASE_URL}/dashboard/tickets/{ticket_id}")
 
 
     # ---------- basic assertions ----------
