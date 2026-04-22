@@ -6,9 +6,13 @@ let client = null;
 
 // const wsScheme = window.location.protocol === "https:" ? "wss" : "ws";
 // const wsUrl = `${wsScheme}://${window.location.host}/ws`;
-const wsUrl = import.meta.env.VITE_WS_BASE_URL;
+// const wsUrl = import.meta.env.VITE_WS_BASE_URL || "ws://localhost:8080/ws";
 // const wsUrl = import.meta.env.VITE_WS_BASE_URL;
 // console.log("VITE_WS_BASE_URL =", wsUrl);
+
+const wsUrl =
+  import.meta.env.VITE_WS_BASE_URL ||
+  `${window.location.protocol === "https:" ? "wss" : "ws"}://${window.location.host}/ws`;
 
 // console.log("MODE", import.meta.env.MODE);
 // console.log("WS", import.meta.env.VITE_WS_BASE_URL);
